@@ -1,0 +1,4309 @@
+:root {
+  --brand-navy: #182c45;
+  --brand-yellow: #f8ee24;
+  --brand-blue: #416ab8;
+  --brand-off-white: #f4f7f7;
+  --text-ink: #102033;
+  --text-muted: #657385;
+  --surface: #ffffff;
+  --surface-secondary: #edf2f7;
+  --border: #dce3ea;
+  --danger: #b42318;
+  --danger-surface: #fff0ee;
+  --danger-border: #ffd3cd;
+  --radius-control: 14px;
+  --radius-small: 12px;
+  --radius-button: 10px;
+  --shadow-summary: 0 8px 20px rgba(24,44,69,.045);
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/*
+ * IMPORTANT: YOURLS is a legacy UI with a number of fixed-size analytics and
+ * share components. Do NOT apply a global border-box reset or global form
+ * sizing here; doing so changes their computed dimensions and can hide content.
+ */
+html { min-height: 100%; background: var(--brand-off-white); }
+body {
+  min-height: 100vh;
+  margin: 0 !important;
+  background: linear-gradient(180deg,#fff 0%,#f7f9fb 52%,#f1f5f7 100%) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  line-height: 1.55;
+}
+a { color: var(--brand-blue); }
+
+/* Native YOURLS visual wordmark only. */
+#wrap > header[role="banner"] { display: none !important; }
+
+/* Shared CORNQ header: text-only ProductName by CORNQ. */
+#wrap > .goobd-brand,
+.goobd-brand {
+  box-sizing: border-box;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw !important;
+  min-height: 78px;
+  display: flex !important;
+  align-items: center;
+  margin: 0 0 26px !important;
+  background: rgba(255,255,255,.96) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.goobd-brand *,
+.goobd-login-intro *,
+.goobd-remember-row * { box-sizing: border-box; }
+.goobd-brand-inner {
+  width: min(1080px, calc(100% - 36px));
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.goobd-brand-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  color: var(--brand-navy) !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.goobd-product-name { font-size:20px; font-weight:800; letter-spacing:-.02em; }
+.goobd-brand-attribution { color:var(--text-muted); font-size:12px; font-weight:600; }
+.goobd-tagline { color:var(--text-muted); font-size:13px; font-weight:600; text-align:right; }
+
+.goobd-brand-link:focus-visible,
+#footer a:focus-visible,
+body.login input[type="submit"]:focus-visible,
+#new_url input[type="submit"]:focus-visible,
+td.actions .button:focus-visible {
+  outline: 3px solid var(--brand-yellow) !important;
+  outline-offset: 3px;
+}
+
+/* LOGIN — all modern form sizing is deliberately scoped to the login page. */
+body.login { display:flex !important; flex-direction:column; }
+body.login #wrap {
+  box-sizing:border-box;
+  width:100% !important; max-width:none !important; min-width:0 !important;
+  min-height:0; margin:0 !important; padding:0 !important;
+  flex:1 0 auto; display:flex; flex-direction:column;
+  background:transparent !important; border:0 !important;
+}
+body.login .goobd-brand { flex:0 0 auto; }
+body.login main {
+  box-sizing:border-box;
+  width:100% !important; margin:0 !important;
+  padding:34px 16px 48px !important;
+  flex:1 0 auto; display:flex; align-items:flex-start; justify-content:center;
+}
+body.login #login { width:min(370px,100%) !important; max-width:none !important; margin:0 !important; padding:0 !important; background:transparent !important; border:0 !important; }
+body.login #login form {
+  box-sizing:border-box;
+  width:100%; margin:0 !important; padding:24px 26px 22px !important;
+  display:flex; flex-direction:column;
+  background:var(--surface) !important;
+  border:1px solid var(--border) !important;
+  border-radius:16px !important;
+  box-shadow:var(--shadow-summary) !important;
+}
+.goobd-login-intro { order:0; margin:0 0 16px; }
+.goobd-login-intro h1 { margin:0; color:var(--brand-navy); font-size:22px; font-weight:750; line-height:1.2; letter-spacing:-.02em; }
+body.login #login form > #error-message,
+body.login #login form > .error {
+  order:1; margin:0 0 16px !important; padding:9px 11px !important;
+  background:var(--danger-surface) !important; border:1px solid var(--danger-border) !important;
+  border-radius:10px !important; color:var(--danger) !important; font-size:12.5px; font-weight:600; line-height:1.35;
+}
+body.login #login form > p { order:2; margin:0 0 12px !important; }
+body.login #login form > p:last-child { margin-bottom:0 !important; }
+body.login #login label:not(.goobd-remember-label) { display:inline-block; margin:0 0 5px; color:var(--text-ink); font-size:12.5px; font-weight:700; line-height:1.3; }
+body.login #login label br { display:none; }
+body.login #login input.text,
+body.login #login input[type="text"],
+body.login #login input[type="password"] {
+  box-sizing:border-box;
+  width:100% !important; min-height:42px; margin:0 !important; padding:9px 11px !important;
+  border:1.5px solid #cfd8e2 !important; border-radius:10px !important;
+  background:var(--surface) !important; color:var(--text-ink) !important;
+  font-family:var(--font-sans) !important; font-size:14px !important; line-height:1.3;
+  box-shadow:none !important; transition:border-color .16s ease,box-shadow .16s ease;
+}
+body.login #login input.text:focus,
+body.login #login input[type="text"]:focus,
+body.login #login input[type="password"]:focus {
+  outline:0 !important; border-color:var(--brand-blue) !important;
+  box-shadow:0 0 0 4px rgba(65,106,184,.10) !important;
+}
+body.login #login input::placeholder { color:#7b8794; opacity:1; font-size:12.5px; font-weight:400; }
+.goobd-remember-row { margin:1px 0 14px !important; }
+.goobd-remember-label { display:inline-flex !important; align-items:center; gap:8px; margin:0 !important; color:var(--text-muted) !important; font-size:12.5px !important; font-weight:500 !important; line-height:1.3; cursor:pointer; white-space:nowrap; }
+.goobd-remember-label input { width:15px !important; height:15px !important; margin:0 !important; flex:0 0 auto; accent-color:var(--brand-blue); }
+body.login #login form > p[style*="text-align"] { width:100%; margin-top:0 !important; text-align:left !important; }
+body.login #login #submit {
+  box-sizing:border-box; width:100%; min-height:44px; padding:10px 18px !important;
+  border:0 !important; border-radius:10px !important; background:var(--brand-navy) !important;
+  color:#fff !important; font-family:var(--font-sans) !important; font-size:14px !important;
+  font-weight:700 !important; line-height:1.2; text-shadow:none !important; box-shadow:none !important; cursor:pointer;
+}
+
+/* ADMIN / COMMON WRAPPER */
+body:not(.login) {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+body:not(.login) #wrap {
+  width:min(1080px,calc(100% - 36px)) !important;
+  max-width:1080px !important; min-width:0 !important;
+  margin:0 auto !important; padding:0 !important;
+  background:transparent !important; border:0 !important;
+  overflow:visible !important;
+  flex:1 0 auto;
+}
+/* Native YOURLS admin menu, retained so plugin-added links keep working. */
+body:not(.login) #wrap > nav[role="navigation"] {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 18px !important;
+  padding: 10px 12px !important;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-summary);
+}
+body:not(.login) #admin_menu {
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  color: var(--text-muted);
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+}
+body:not(.login) .goobd-menu-toggle {
+  display: none;
+}
+body:not(.login) #admin_menu > li,
+body:not(.login) #admin_menu > li:hover,
+body:not(.login) #admin_menu ul > li,
+body:not(.login) #admin_menu ul > li:hover {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  color: var(--text-muted) !important;
+}
+body:not(.login) #admin_menu > li > a,
+body:not(.login) #admin_menu .admin_menu_sublevel > a {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none !important;
+}
+body:not(.login) #admin_menu > li > a:hover,
+body:not(.login) #admin_menu .admin_menu_sublevel > a:hover {
+  background: var(--surface-secondary);
+  border-color: var(--border);
+}
+body:not(.login) #admin_menu > li > a:focus-visible,
+body:not(.login) #admin_menu .admin_menu_sublevel > a:focus-visible {
+  outline: 3px solid var(--brand-yellow);
+  outline-offset: 2px;
+}
+body.index #admin_menu_admin_link > a,
+body.bookmark #admin_menu_admin_link > a,
+body.tools #admin_menu_tools_link > a,
+body.plugins #admin_menu_plugins_link > a {
+  background: var(--brand-navy) !important;
+  border-color: var(--brand-navy) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 12.5px !important;
+  text-indent: 0 !important;
+  text-shadow: none !important;
+}
+body.index #admin_menu_admin_link > a:any-link,
+body.bookmark #admin_menu_admin_link > a:any-link,
+body.tools #admin_menu_tools_link > a:any-link,
+body.plugins #admin_menu_plugins_link > a:any-link {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+body:not(.login) #admin_menu_logout_link {
+  order: 20;
+  gap: 4px;
+  margin-left: auto !important;
+  padding-left: 10px !important;
+  white-space: nowrap;
+}
+body:not(.login) #admin_menu_logout_link strong {
+  color: var(--brand-navy);
+  font-weight: 800;
+}
+body:not(.login) #admin_menu_logout_link > a {
+  min-height: 30px;
+  padding: 5px 9px;
+  background: #fff7f6;
+  border-color: #f2cbc6;
+  color: var(--danger) !important;
+  font-size: 11.5px;
+}
+body:not(.login) #admin_menu_plugins_link {
+  position: relative;
+  flex-wrap: nowrap;
+}
+body:not(.login) #admin_menu_plugins_link > a::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin: -3px 1px 0 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .16s ease, margin .16s ease;
+}
+body:not(.login) #admin_menu_plugins_link.goobd-plugin-menu-open > a::after {
+  margin-top: 3px;
+  transform: rotate(225deg);
+}
+body:not(.login) #admin_menu_plugins_link > ul {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 80;
+  top: calc(100% + 8px);
+  left: 0;
+  display: none !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: max-content;
+  min-width: 210px;
+  max-width: min(300px, calc(100vw - 24px));
+  margin: 0 !important;
+  padding: 6px !important;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(24,44,69,.14);
+  list-style: none !important;
+}
+body:not(.login) #admin_menu_plugins_link.goobd-plugin-menu-open > ul {
+  display: flex !important;
+}
+body:not(.login) #admin_menu_plugins_link:not(.goobd-plugin-menu-ready) > ul {
+  position: static;
+  display: inline-flex !important;
+  width: auto;
+  min-width: 0;
+  margin-left: 5px !important;
+  padding: 0 0 0 6px !important;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+}
+body:not(.login) #admin_menu_plugins_link > ul > li,
+body:not(.login) #admin_menu_plugins_link > ul > li > a {
+  width: 100%;
+}
+body:not(.login) #admin_menu .admin_menu_sublevel > a {
+  justify-content: flex-start;
+  min-height: 38px;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--brand-navy) !important;
+  font-size: 12px;
+}
+body:not(.login) #admin_menu .admin_menu_sublevel > a:hover,
+body:not(.login) #admin_menu .admin_menu_sublevel > a:focus-visible {
+  background: var(--surface-secondary);
+}
+body:not(.login) #admin_menu .goobd-all-plugins > a {
+  background: #eef3fb;
+  color: #294f8f !important;
+  font-weight: 800;
+}
+body.index #overall_tracking {
+  margin: 8px 0 18px !important;
+  color: var(--text-muted) !important;
+  font-size: 12.5px !important;
+}
+body.index #overall_tracking strong {
+  color: var(--brand-navy);
+  font-weight: 800;
+}
+body.index .goobd-empty-summary-line {
+  display: none !important;
+}
+body.index .goobd-dashboard-summary {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 18px;
+  padding: 11px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-summary);
+}
+body.index .goobd-dashboard-summary > p,
+body.index .goobd-dashboard-summary #overall_tracking {
+  min-width: 0;
+  margin: 0 !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+body.index .goobd-dashboard-summary .goobd-summary-overall {
+  text-align: right;
+}
+body.index .goobd-dashboard-summary strong {
+  color: var(--brand-navy) !important;
+  font-weight: 800 !important;
+  font-variant-numeric: tabular-nums;
+}
+body:not(.login) .notice,
+body:not(.login) .success,
+body:not(.login) .error { border-radius:var(--radius-small) !important; }
+
+/* Dashboard URL creator — scoped so stat/share fields keep YOURLS' native dimensions. */
+body:not(.login) #new_url {
+  box-sizing:border-box;
+  margin-bottom:22px !important; padding:20px !important;
+  background:var(--surface) !important; border:1px solid var(--border) !important;
+  border-radius:18px !important; box-shadow:var(--shadow-summary);
+}
+body:not(.login) #new_url input.text {
+  box-sizing:border-box; min-height:44px; padding:10px 12px !important;
+  border:1.5px solid #cfd8e2 !important; border-radius:var(--radius-control) !important;
+  background:var(--surface) !important; color:var(--text-ink) !important; box-shadow:none !important;
+}
+body:not(.login) #new_url input.text:focus {
+  outline:0 !important; border-color:var(--brand-blue) !important;
+  box-shadow:0 0 0 4px rgba(65,106,184,.10) !important;
+}
+body:not(.login) #new_url #add-button {
+  box-sizing:border-box; min-height:44px; padding:10px 20px !important;
+  border:0 !important; border-radius:var(--radius-button) !important;
+  background:var(--brand-navy) !important; color:#fff !important;
+  font-family:var(--font-sans) !important; font-size:15px !important; font-weight:700 !important;
+  text-shadow:none !important; box-shadow:none !important; cursor:pointer;
+}
+body:not(.login) #filter_form,
+body:not(.login) #main_table,
+body:not(.login) table.tblSorter { background:var(--surface); }
+body:not(.login) table { border-color:var(--border) !important; }
+body:not(.login) th { color:var(--brand-navy); }
+
+/*
+ * STATISTICS / INFO PAGES
+ * Preserve YOURLS' legacy layout contract. In particular, share.css uses
+ * fixed content-box dimensions (div.share height:140px), and #shareboxes
+ * intentionally clips/contains floated children. A global border-box reset or
+ * oversized textarea/input styling makes the last line (Twitter/Facebook) disappear.
+ */
+#tabs,
+#tabs .tab,
+#shareboxes { overflow:visible; }
+#tabs .wrap_unfloat,
+#shareboxes { overflow:hidden; }
+
+/* Restore content-box specifically where YOURLS uses fixed chart/share geometry. */
+#tabs table,
+#tabs td,
+#tabs .line,
+#shareboxes,
+#shareboxes .share,
+#shareboxes input,
+#shareboxes textarea,
+#shareboxes p,
+#shareboxes span,
+#shareboxes a { box-sizing:content-box !important; }
+
+/* Let share cards grow if fonts/content need a few extra pixels. */
+#shareboxes { margin-bottom:8px; }
+#shareboxes div.share {
+  height:auto !important;
+  min-height:140px !important;
+  overflow:visible !important;
+}
+#shareboxes #tweet { overflow:visible !important; }
+#shareboxes #tweet_body {
+  box-sizing:content-box !important;
+  height:4em !important;
+  font-size:12px !important;
+}
+#shareboxes #share_links {
+  display:block !important;
+  clear:both;
+  margin-top:1em !important;
+  margin-bottom:1em !important;
+  overflow:visible !important;
+}
+#stat_tab_share { padding-bottom:16px !important; overflow:visible !important; }
+#stat_tab_share::after,
+#shareboxes::after { content:""; display:block; clear:both; }
+
+/* Do not crop analytics tables/charts if a browser computes them slightly wider. */
+#stat_tab_stats,
+#stat_tab_location,
+#stat_tab_sources { overflow:visible !important; }
+#tabs .tab > table { max-width:none; }
+
+/* URL-table actions: force all four actions to remain visible. */
+body.desktop td.actions input,
+body.desktop td.actions a {
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+td.actions { white-space:nowrap !important; min-width:220px; }
+td.actions .button {
+  box-sizing:border-box;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+  display:inline-flex !important;
+  float:none !important;
+  align-items:center;
+  justify-content:center;
+  width:auto !important;
+  height:30px !important;
+  min-height:30px !important;
+  margin:2px 4px 2px 0 !important;
+  padding:0 9px !important;
+  border:1px solid var(--border) !important;
+  border-radius:8px !important;
+  background:var(--surface-secondary) !important;
+  background-image:none !important;
+  color:var(--brand-navy) !important;
+  font-family:var(--font-sans) !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+  text-indent:0 !important;
+  text-shadow:none !important;
+  text-decoration:none !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+td.actions .button:hover { background:#e2e9f0 !important; border-color:#cfd8e2 !important; text-decoration:none !important; }
+td.actions .button_delete { color:var(--danger) !important; background:#fff7f6 !important; border-color:#f2cbc6 !important; }
+td.actions .button_delete:hover { background:var(--danger-surface) !important; border-color:var(--danger-border) !important; }
+td.actions input.disabled,
+td.actions input.loading,
+td.actions a { visibility:visible !important; opacity:1 !important; }
+
+/* FOOTER — full width, centered, no legacy rounded blue outline. */
+#footer {
+  box-sizing:border-box;
+  display:block !important;
+  flex:0 0 auto;
+  width:100% !important; max-width:none !important; min-width:0 !important;
+  margin:42px 0 0 !important; padding:24px 18px !important;
+  background:var(--surface) !important;
+  border:0 !important; border-radius:0 !important;
+  color:var(--text-muted) !important;
+  font-family:var(--font-sans) !important;
+  font-size:13px !important; font-weight:400 !important; text-align:center !important;
+  box-shadow:none !important; clear:both !important;
+}
+#footer p {
+  box-sizing:border-box;
+  display:block !important;
+  width:100% !important; max-width:none !important; min-width:0 !important;
+  margin:0 !important; padding:0 !important;
+  background:transparent !important;
+  border:0 !important; border-radius:0 !important;
+  box-shadow:none !important; text-align:center !important;
+}
+#footer p a {
+  background:none !important;
+  padding-left:0 !important;
+}
+#footer a { color:var(--brand-navy) !important; font-weight:700 !important; text-decoration:none !important; }
+#footer a:hover,#footer a:focus-visible { text-decoration:underline !important; }
+
+@media (max-width:900px) {
+  /* Statistics pages can contain fixed-width Google charts. Allow horizontal scroll rather than crop data. */
+  #tabs .tab { overflow-x:auto !important; overflow-y:visible !important; }
+
+  /* Share fields stack safely instead of being clipped when space gets tight. */
+  #shareboxes .share {
+    float:none !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:0 0 12px !important;
+    min-height:0 !important;
+  }
+  #shareboxes #tweet_body {
+    box-sizing:border-box !important;
+    width:calc(100% - 4px) !important;
+    max-width:none !important;
+  }
+  #shareboxes #copylink { box-sizing:border-box !important; max-width:100% !important; }
+  #shareboxes #origlink { max-width:calc(100% - 10px); }
+}
+
+/* Dashboard Quick Share. Keep this isolated from statistics/info pages, whose
+ * fixed legacy chart and share dimensions require the native layout contract. */
+body.index #shareboxes {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 18px 0 22px !important;
+  padding: 0 !important;
+  overflow: visible;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  scroll-margin-top: 18px;
+}
+body.index #shareboxes::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+body.index #shareboxes .share {
+  box-sizing: border-box !important;
+  float: left !important;
+  width: calc(50% - 7px) !important;
+  min-height: 190px !important;
+  height: auto !important;
+  margin: 0 14px 0 0 !important;
+  padding: 18px !important;
+  overflow: visible !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-summary) !important;
+}
+body.index #shareboxes .share:last-of-type {
+  margin-right: 0 !important;
+}
+body.index #shareboxes .share h2 {
+  margin: 0 0 14px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.01em;
+}
+body.index #shareboxes .share p {
+  margin: 10px 0 0 !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+body.index #shareboxes .share small {
+  color: var(--text-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+body.index #shareboxes #copylink,
+body.index #shareboxes #tweet_body {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border: 1.5px solid #cfd8e2 !important;
+  border-radius: 10px !important;
+  background-color: var(--surface) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+}
+body.index #shareboxes #copylink {
+  min-height: 42px !important;
+  padding: 9px 38px 9px 11px !important;
+  background-position: right 11px center !important;
+}
+body.index #shareboxes #tweet {
+  overflow: visible !important;
+}
+body.index #shareboxes #tweet_body {
+  display: block !important;
+  float: none !important;
+  min-height: 88px !important;
+  height: 88px !important;
+  padding: 10px 11px !important;
+  line-height: 1.45 !important;
+  resize: vertical;
+}
+body.index #shareboxes #copylink:focus,
+body.index #shareboxes #tweet_body:focus {
+  outline: 0 !important;
+  border-color: var(--brand-blue) !important;
+  box-shadow: 0 0 0 4px rgba(65,106,184,.10) !important;
+}
+body.index #shareboxes #origlink,
+body.index #shareboxes #statlink {
+  display: inline !important;
+  width: auto !important;
+  max-width: 100% !important;
+  color: var(--brand-blue) !important;
+  font-weight: 600 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-decoration: none !important;
+}
+body.index #shareboxes #origlink:hover,
+body.index #shareboxes #statlink:hover {
+  text-decoration: underline !important;
+}
+body.index #shareboxes #charcount {
+  display: inline-block !important;
+  margin: 0 0 6px !important;
+  padding: 2px 7px !important;
+  border-radius: 999px !important;
+  background: #eef3fb !important;
+  color: var(--brand-blue) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+body.index #shareboxes #charcount.negative {
+  background: var(--danger-surface) !important;
+  color: var(--danger) !important;
+}
+body.index #shareboxes #share_links {
+  display: flex !important;
+  clear: both !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 10px 0 0 !important;
+}
+body.index #shareboxes #share_links a {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 34px !important;
+  padding: 7px 10px 7px 30px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  background-color: var(--surface-secondary) !important;
+  background-position: 9px center !important;
+  color: var(--brand-navy) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+}
+body.index #shareboxes #share_tw,
+body.index #shareboxes #share_fb {
+  background-position: 9px center !important;
+  background-repeat: no-repeat !important;
+  background-size: 16px 16px !important;
+}
+body.index #shareboxes #share_links a:hover {
+  background-color: #e2e9f0 !important;
+}
+body.index #shareboxes #share_links a:focus-visible {
+  outline: 3px solid var(--brand-yellow) !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  body.index #shareboxes .share {
+    float: none !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 0 12px !important;
+    padding: 16px !important;
+  }
+  body.index #shareboxes .share:last-of-type {
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-width:700px) {
+  #wrap > .goobd-brand,.goobd-brand { min-height:66px; margin-bottom:18px !important; }
+  .goobd-brand-inner { width:min(100% - 28px,1080px); }
+  .goobd-tagline { display:none; }
+  body.login main { padding:22px 14px 38px !important; }
+  body.login #login { width:min(360px,100%) !important; }
+  body.login #login form { padding:22px 20px 20px !important; border-radius:14px !important; }
+  .goobd-remember-label { white-space:normal; }
+  body:not(.login) #wrap { width:min(100% - 20px,1080px) !important; }
+  body:not(.login) #new_url { padding:16px !important; }
+  body:not(.login) #wrap > nav[role="navigation"] {
+    margin-bottom: 14px !important;
+    padding: 10px !important;
+    border-radius: 12px;
+  }
+  body:not(.login) .goobd-menu-toggle {
+    box-sizing: border-box;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 10px 13px;
+    background: var(--brand-navy);
+    border: 1px solid var(--brand-navy);
+    border-radius: 9px;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  body:not(.login) .goobd-mobile-menu-ready > .goobd-menu-toggle {
+    display: flex;
+  }
+  body:not(.login) .goobd-menu-toggle:focus-visible {
+    outline: 3px solid var(--brand-yellow);
+    outline-offset: 2px;
+  }
+  body:not(.login) .goobd-menu-toggle-icon {
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 14px;
+  }
+  body:not(.login) .goobd-menu-toggle-icon > span {
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform .16s ease, opacity .16s ease, top .16s ease;
+  }
+  body:not(.login) .goobd-menu-toggle-icon > span:nth-child(1) { top: 0; }
+  body:not(.login) .goobd-menu-toggle-icon > span:nth-child(2) { top: 6px; }
+  body:not(.login) .goobd-menu-toggle-icon > span:nth-child(3) { top: 12px; }
+  body:not(.login) .goobd-admin-menu-open .goobd-menu-toggle-icon > span:nth-child(1) {
+    top: 6px;
+    transform: rotate(45deg);
+  }
+  body:not(.login) .goobd-admin-menu-open .goobd-menu-toggle-icon > span:nth-child(2) {
+    opacity: 0;
+  }
+  body:not(.login) .goobd-admin-menu-open .goobd-menu-toggle-icon > span:nth-child(3) {
+    top: 6px;
+    transform: rotate(-45deg);
+  }
+  body:not(.login) .goobd-mobile-menu-ready > #admin_menu {
+    display: none !important;
+    margin-top: 10px !important;
+    padding-top: 10px !important;
+    border-top: 1px solid var(--border);
+  }
+  body:not(.login) .goobd-mobile-menu-ready.goobd-admin-menu-open > #admin_menu {
+    display: flex !important;
+  }
+  body:not(.login) #admin_menu {
+    gap: 8px;
+  }
+  body:not(.login) #admin_menu_logout_link {
+    order: -1;
+    flex: 0 0 100%;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0 !important;
+    padding: 0 0 8px !important;
+    border-bottom: 1px solid var(--border);
+  }
+  body:not(.login) #admin_menu > li:not(#admin_menu_logout_link) {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+  body:not(.login) #admin_menu > li:not(#admin_menu_logout_link) > a {
+    width: 100%;
+    min-height: 44px;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  body:not(.login) #admin_menu_plugins_link {
+    flex-basis: 100% !important;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  body:not(.login) #admin_menu_plugins_link > a {
+    flex: 1 1 100%;
+  }
+  body:not(.login) #admin_menu_plugins_link > a::after {
+    margin-left: auto;
+  }
+  body:not(.login) #admin_menu_plugins_link > ul {
+    position: static;
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0 !important;
+    padding: 6px !important;
+    background: #f7f9fb;
+    box-shadow: none;
+  }
+  body:not(.login) #admin_menu_plugins_link > ul > li,
+  body:not(.login) #admin_menu_plugins_link > ul > li > a {
+    width: 100%;
+  }
+  body:not(.login) #admin_menu_plugins_link > ul > li > a {
+    min-height: 42px;
+  }
+  body.index .goobd-dashboard-summary {
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    gap: 6px;
+    margin-bottom: 14px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  body.index .goobd-dashboard-summary > p,
+  body.index .goobd-dashboard-summary #overall_tracking {
+    font-size: clamp(9.5px, 2.65vw, 11.5px) !important;
+    line-height: 1.3;
+  }
+  body.index .goobd-dashboard-summary .goobd-summary-filtered {
+    white-space: normal;
+  }
+  td.actions { min-width:180px; white-space:normal !important; }
+  td.actions .button { margin-bottom:4px !important; }
+  #footer { margin-top:28px !important; padding:22px 16px !important; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .goobd-brand *,
+  body.login *,
+  #new_url *,
+  td.actions *,
+  .goobd-menu-toggle * { transition:none !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+}
+
+/* ========================================================================
+ * DASHBOARD URL TABLE — compact professional treatment
+ * Scope all rules to #main_table so YOURLS analytics/share tables are not
+ * affected. The native sorter remains functional.
+ * ====================================================================== */
+#main_table.tblSorter {
+  width: 100% !important;
+  min-width: 900px;
+  margin: 14px 0 0 !important;
+  border: 1px solid var(--border) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 14px !important;
+  background: var(--surface) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+  text-align: left;
+}
+
+/* The dashboard main area may scroll on small screens instead of squeezing
+ * columns until URLs, dates and action labels become unreadable. */
+body:not(.login) main[role="main"] {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 2px;
+}
+
+#main_table thead tr th,
+#main_table thead tr th.header,
+#main_table thead tr th.tablesorter-header {
+  height: auto !important;
+  padding: 10px 30px 10px 12px !important;
+  border: 0 !important;
+  border-right: 1px solid var(--border) !important;
+  border-bottom: 1px solid var(--border) !important;
+  background-color: #f7f9fb !important;
+  background-position: right 10px center !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1.25 !important;
+  letter-spacing: .01em;
+  vertical-align: middle;
+}
+#main_table thead tr th:last-child { border-right: 0 !important; }
+#main_table thead tr th.tablesorter-headerAsc,
+#main_table thead tr th.tablesorter-headerDesc {
+  background-color: #eef3fb !important;
+  color: var(--brand-navy) !important;
+}
+#main_table thead tr th span { margin-right: 0 !important; }
+
+#main_table tbody td {
+  padding: 10px 12px !important;
+  border: 0 !important;
+  border-right: 1px solid #edf1f4 !important;
+  border-bottom: 1px solid #e8edf2 !important;
+  background: var(--surface) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+  line-height: 1.4 !important;
+  vertical-align: middle !important;
+}
+#main_table tbody td:last-child { border-right: 0 !important; }
+#main_table tbody tr:last-child td { border-bottom: 0 !important; }
+
+/* A very light alternate row improves scanning without the old blue bands. */
+#main_table tbody tr.normal-row td { background: #fafcfd !important; }
+#main_table tbody tr.alt-row td { background: var(--surface) !important; }
+#main_table tbody tr.normal-row:hover td,
+#main_table tbody tr.alt-row:hover td,
+#main_table tbody tr:not(.edit-row):hover td {
+  background: #f4f7fa !important;
+}
+
+/* Column rhythm. Keep important identifiers compact and give the URL room. */
+#main_table_head_shorturl,
+#main_table td.keyword { width: 12%; }
+#main_table_head_longurl,
+#main_table td.url { width: 40%; }
+#main_table_head_date,
+#main_table td.timestamp { width: 14%; }
+#main_table_head_ip,
+#main_table td.ip { width: 12%; }
+#main_table_head_clicks,
+#main_table td.clicks { width: 7%; text-align: center !important; }
+#main_table_head_actions,
+#main_table td.actions { width: 15%; }
+#main_table_head_clicks { text-align: center !important; }
+
+/* URL hierarchy: title first, destination second. */
+#main_table td.keyword > a {
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+#main_table td.url > a:first-child {
+  display: block;
+  color: var(--brand-blue) !important;
+  font-weight: 600 !important;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  text-decoration: none !important;
+}
+#main_table td.url small {
+  display: block;
+  max-width: 100%;
+  margin-top: 3px;
+  color: #8793a1 !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  overflow: hidden;
+}
+#main_table td.url small a {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #8793a1 !important;
+  font-weight: 400 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#main_table td.keyword > a:hover,
+#main_table td.url > a:first-child:hover { text-decoration: underline !important; }
+
+#main_table td.timestamp,
+#main_table td.ip,
+#main_table td.clicks {
+  font-variant-numeric: tabular-nums;
+}
+#main_table td.timestamp,
+#main_table td.ip { white-space: nowrap; }
+#main_table tbody td.ip {
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* Action group: quieter and tighter than the previous pill-heavy version. */
+#main_table td.actions {
+  min-width: 206px !important;
+  white-space: nowrap !important;
+}
+#main_table td.actions .button {
+  box-sizing: border-box;
+  height: 30px !important;
+  min-height: 30px !important;
+  margin: 0 4px 0 0 !important;
+  padding: 0 9px !important;
+  border: 1px solid #d6dee6 !important;
+  border-radius: 7px !important;
+  background: #f6f8fa !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  line-height: 28px !important;
+  text-decoration: none !important;
+  transition: background-color .14s ease, border-color .14s ease, color .14s ease;
+}
+#main_table td.actions .button:last-of-type { margin-right: 0 !important; }
+#main_table td.actions .button:hover {
+  background: #eef3f7 !important;
+  border-color: #c8d2dc !important;
+}
+#main_table td.actions .button_stats {
+  background: #eef3fb !important;
+  border-color: #d5e1f4 !important;
+  color: #294f8f !important;
+}
+#main_table td.actions .button_stats:hover { background: #e4edf9 !important; }
+#main_table td.actions .button_delete {
+  background: #fff !important;
+  border-color: #efc6c2 !important;
+  color: var(--danger) !important;
+}
+#main_table td.actions .button_delete:hover {
+  background: var(--danger-surface) !important;
+  border-color: var(--danger-border) !important;
+}
+
+/* Inline Edit row — make the legacy form readable without increasing the
+ * whole table density. */
+#main_table tbody tr.edit-row td {
+  padding: 12px 14px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid var(--border) !important;
+  vertical-align: middle !important;
+}
+#main_table tbody tr.edit-row td.edit-row {
+  line-height: 1.65 !important;
+}
+#main_table tbody tr.edit-row td.edit-row strong {
+  display: inline-block;
+  width: 72px;
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+}
+#main_table tbody tr.edit-row input.text {
+  box-sizing: border-box;
+  min-height: 34px;
+  margin: 3px 0 4px 6px !important;
+  padding: 6px 9px !important;
+  border: 1px solid #cfd8e2 !important;
+  border-radius: 8px !important;
+  background: var(--surface) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+#main_table tbody tr.edit-row input.text:focus {
+  outline: 0 !important;
+  border-color: var(--brand-blue) !important;
+  box-shadow: 0 0 0 3px rgba(65,106,184,.10) !important;
+}
+#main_table tbody tr.edit-row input[id^="edit-url-"] {
+  width: min(650px, calc(100% - 86px)) !important;
+}
+#main_table tbody tr.edit-row input[id^="edit-keyword-"] { width: 180px !important; }
+#main_table tbody tr.edit-row input[id^="edit-title-"] {
+  width: min(520px, calc(100% - 86px)) !important;
+}
+#main_table tbody tr.edit-row td:last-child {
+  min-width: 150px;
+  white-space: nowrap;
+}
+#main_table tbody tr.edit-row input.button {
+  box-sizing: border-box;
+  min-height: 32px;
+  margin: 0 5px 0 0 !important;
+  padding: 6px 10px !important;
+  border: 1px solid #d2dae3 !important;
+  border-radius: 7px !important;
+  background: var(--surface-secondary) !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+#main_table tbody tr.edit-row input[id^="edit-submit-"] {
+  border-color: var(--brand-navy) !important;
+  background: var(--brand-navy) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 700px) {
+  #main_table.tblSorter { min-width: 860px; }
+}
+
+/* ========================================================================
+ * v1.6 — responsive dashboard table
+ * - Keep all four desktop actions inside the table boundary.
+ * - Convert each URL row into a readable card on phones instead of scaling
+ *   the desktop table or requiring horizontal scrolling.
+ * ====================================================================== */
+
+/* Desktop/tablet: make the six columns resolve inside the available width. */
+#main_table.tblSorter {
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+#main_table_head_shorturl,
+#main_table td.keyword { width: 14% !important; }
+#main_table_head_longurl,
+#main_table td.url { width: 32% !important; }
+#main_table_head_date,
+#main_table td.timestamp { width: 14% !important; }
+#main_table_head_ip,
+#main_table td.ip { width: 12% !important; }
+#main_table_head_clicks,
+#main_table td.clicks { width: 7% !important; }
+#main_table_head_actions,
+#main_table td.actions { width: 21% !important; }
+
+/* Five compact labels fit the Actions column without pushing Delete outside. */
+#main_table td.actions {
+  min-width: 0 !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+#main_table td.actions .button {
+  min-width: 0 !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  margin: 0 3px 0 0 !important;
+  padding: 0 5px !important;
+  font-size: 10px !important;
+  line-height: 28px !important;
+}
+#main_table td.actions .button:last-of-type { margin-right: 0 !important; }
+#main_table td.actions .goobd-copy-button {
+  min-width: 40px !important;
+  margin-right: 3px !important;
+  cursor: pointer !important;
+}
+#main_table td.actions .goobd-copy-button.goobd-copy-success {
+  border-color: #b9dfcf !important;
+  background: #eef9f4 !important;
+  color: var(--success) !important;
+}
+
+/* Long keywords should wrap instead of widening the whole table. */
+#main_table td.keyword,
+#main_table td.keyword > a {
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Medium screens: keep a usable table and permit a small, intentional scroll
+ * only before the card layout takes over at the phone breakpoint. */
+@media (min-width: 701px) and (max-width: 920px) {
+  body:not(.login) main[role="main"] { overflow-x: auto !important; }
+  #main_table.tblSorter { min-width: 900px !important; }
+}
+
+@media (max-width: 700px) {
+  /* A phone gets cards, not a shrunken desktop table. */
+  body:not(.login) main[role="main"] {
+    overflow-x: visible !important;
+    width: 100% !important;
+  }
+
+  #main_table.tblSorter {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 14px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Keep the header accessible to screen readers while removing the six-column
+   * visual header that no longer applies to the card representation. */
+  #main_table > thead {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  #main_table > tbody {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 12px !important;
+    overflow: hidden !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 5px 14px rgba(24,44,69,.035) !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td {
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 10px 12px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #edf1f4 !important;
+    background: var(--surface) !important;
+    white-space: normal !important;
+    text-align: left !important;
+    overflow: visible !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td:last-child {
+    border-bottom: 0 !important;
+  }
+  #main_table > tbody > tr:not(.edit-row):hover > td {
+    background: var(--surface) !important;
+  }
+
+  /* Mobile field labels make each row self-describing after the table header is hidden. */
+  #main_table td.keyword::before,
+  #main_table td.url::before,
+  #main_table td.timestamp::before,
+  #main_table td.ip::before,
+  #main_table td.clicks::before,
+  #main_table td.actions::before {
+    display: block;
+    margin: 0 0 4px;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+  }
+  #main_table td.keyword::before { content: "Short URL"; }
+  #main_table td.url::before { content: "Original URL"; }
+  #main_table td.timestamp::before { content: "Date"; }
+  #main_table td.ip::before { content: "IP"; }
+  #main_table td.clicks::before { content: "Clicks"; }
+  #main_table td.actions::before { content: "Actions"; }
+
+  #main_table td.keyword > a {
+    display: block !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+  #main_table td.url > a:first-child {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+  #main_table td.url small {
+    margin-top: 5px !important;
+    overflow: visible !important;
+  }
+  #main_table td.url small a {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+  }
+  #main_table td.timestamp,
+  #main_table td.ip,
+  #main_table td.clicks {
+    font-size: 12.5px !important;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* All actions remain visible as a 2x2 touch-friendly grid. */
+  #main_table td.actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 12px !important;
+    white-space: normal !important;
+  }
+  #main_table td.actions::before {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+  #main_table td.actions .button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+  #main_table td.actions input[type="hidden"] { display: none !important; }
+
+  /* Inline editor becomes a single clean panel below the row. */
+  #main_table > tbody > tr.edit-row {
+    display: block !important;
+    width: 100% !important;
+    margin: -4px 0 12px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #f8fafc !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+  }
+  #main_table > tbody > tr.edit-row > td {
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 12px !important;
+    border: 0 !important;
+    background: #f8fafc !important;
+    white-space: normal !important;
+  }
+  #main_table tbody tr.edit-row td.edit-row strong {
+    display: block !important;
+    width: auto !important;
+    margin: 7px 0 3px !important;
+  }
+  #main_table tbody tr.edit-row td.edit-row strong:first-child { margin-top: 0 !important; }
+  #main_table tbody tr.edit-row input.text,
+  #main_table tbody tr.edit-row input[id^="edit-url-"],
+  #main_table tbody tr.edit-row input[id^="edit-keyword-"],
+  #main_table tbody tr.edit-row input[id^="edit-title-"] {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 6px !important;
+  }
+  #main_table tbody tr.edit-row td:last-child {
+    display: flex !important;
+    gap: 8px;
+    padding-top: 0 !important;
+  }
+  #main_table tbody tr.edit-row input.button {
+    flex: 1 1 0;
+    min-height: 40px !important;
+    margin: 0 !important;
+  }
+
+  /* The legacy search/filter controls should wrap naturally instead of producing
+   * the bottom horizontal scrollbar shown in the old mobile layout. */
+  #filter_form {
+    box-sizing: border-box !important;
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 14px 0 0 !important;
+    padding: 12px !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    line-height: 2.15 !important;
+  }
+  #filter_form input,
+  #filter_form select {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    min-height: 32px !important;
+    margin: 2px 3px !important;
+  }
+  #filter_buttons,
+  #pagination {
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    text-align: left !important;
+  }
+  .navigation { overflow: visible !important; }
+}
+
+/* =========================================================
+ * v1.7 — Dashboard filter / pagination polish
+ * Keep the native YOURLS form markup and behavior, but make
+ * the controls visually consistent with the CORNQ UI system.
+ * ======================================================= */
+body:not(.login) #filter_form {
+  box-sizing: border-box !important;
+  float: left !important;
+  width: calc(100% - 190px) !important;
+  max-width: calc(100% - 190px) !important;
+  margin: 14px 0 0 !important;
+  padding: 14px 16px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 2.75 !important;
+}
+body:not(.login) #filter_form::before {
+  content: "Filter links";
+  display: block;
+  margin: 0 0 7px !important;
+  color: var(--brand-navy);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+body:not(.login) #filter_form input[type="text"],
+body:not(.login) #filter_form input[type="number"],
+body:not(.login) #filter_form input:not([type]),
+body:not(.login) #filter_form select {
+  box-sizing: border-box !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  margin: 2px 5px !important;
+  padding: 0 9px !important;
+  border: 1px solid #cfd8e2 !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  line-height: 32px !important;
+  vertical-align: middle !important;
+  box-shadow: none !important;
+}
+body:not(.login) #filter_form input:focus,
+body:not(.login) #filter_form select:focus {
+  outline: 0 !important;
+  border-color: var(--brand-blue) !important;
+  box-shadow: 0 0 0 3px rgba(65,106,184,.10) !important;
+}
+body:not(.login) #filter_form input.button,
+body:not(.login) #filter_buttons input.button,
+body:not(.login) #filter_form button {
+  box-sizing: border-box !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  margin: 3px 4px !important;
+  padding: 0 13px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  background: var(--surface-secondary) !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 32px !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  vertical-align: middle !important;
+}
+body:not(.login) #filter_form input.button:hover,
+body:not(.login) #filter_buttons input.button:hover,
+body:not(.login) #filter_form button:hover {
+  background: #e2e9f0 !important;
+}
+/* The Search action is the primary action in the native filter form. */
+body:not(.login) #filter_form input[value="Search"],
+body:not(.login) #filter_buttons input[value="Search"] {
+  border-color: var(--brand-navy) !important;
+  background: var(--brand-navy) !important;
+  color: #fff !important;
+}
+body:not(.login) #filter_form input[value="Search"]:hover,
+body:not(.login) #filter_buttons input[value="Search"]:hover {
+  background: #e2e9f0 !important;
+  border-color: #c5d0dc !important;
+  color: var(--brand-navy) !important;
+  -webkit-text-fill-color: var(--brand-navy) !important;
+  filter: none !important;
+}
+
+/* AJAX action feedback. Fixed positioning avoids shifting the URL table. */
+body:not(.login) .goobd-status-region {
+  position: fixed;
+  z-index: 100000;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  justify-items: end;
+  width: min(320px, calc(100vw - 36px));
+  gap: 8px;
+  pointer-events: none;
+}
+body:not(.login) .goobd-status-toast {
+  position: relative;
+  box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+  padding: 9px 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--text-ink);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+  box-shadow: 0 4px 14px rgba(24,44,69,.08);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+body:not(.login) .goobd-status-toast-success {
+  background: var(--surface);
+  border-color: var(--border);
+}
+body:not(.login) .goobd-status-toast-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 700px) {
+  body:not(.login) .goobd-status-region {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    justify-items: stretch;
+  }
+  body:not(.login) .goobd-status-toast { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:not(.login) .goobd-status-toast {
+    transition: none;
+  }
+}
+
+body:not(.login) #pagination {
+  box-sizing: border-box !important;
+  float: right !important;
+  width: 176px !important;
+  max-width: 176px !important;
+  margin: 14px 0 0 12px !important;
+  padding: 14px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  text-align: right !important;
+}
+body:not(.login) #pagination .nav_total {
+  display: block !important;
+  margin: 0 0 9px !important;
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+}
+body:not(.login) #pagination .navigation,
+body:not(.login) .navigation {
+  overflow: visible !important;
+}
+body:not(.login) #pagination .nav_link a,
+body:not(.login) #pagination .nav_current,
+body:not(.login) .navigation .nav_link a,
+body:not(.login) .navigation .nav_current {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  margin: 2px !important;
+  padding: 0 8px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  background: var(--surface) !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+body:not(.login) #pagination .nav_current,
+body:not(.login) .navigation .nav_current {
+  border-color: var(--brand-navy) !important;
+  background: var(--brand-navy) !important;
+  color: #fff !important;
+}
+body:not(.login) #pagination .nav_link a:hover,
+body:not(.login) .navigation .nav_link a:hover {
+  border-color: #cfd8e2 !important;
+  background: var(--surface-secondary) !important;
+}
+
+/* JavaScript moves the native pagination node below #main_table. The original
+ * links and query strings remain intact; only their DOM position changes. */
+body.index.goobd-pagination-relocated #filter_form {
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+body.index.goobd-filter-relocated #main_table > tfoot {
+  display: none !important;
+}
+body.index #filter_form.goobd-filter-above-table {
+  box-sizing: border-box !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 14px 0 0 !important;
+  padding: 18px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 5px 14px rgba(24,44,69,.035) !important;
+}
+body.index #pagination.goobd-pagination-bottom {
+  box-sizing: border-box !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 14px 0 0 !important;
+  padding: 12px 14px !important;
+  text-align: left !important;
+}
+body.index #pagination.goobd-pagination-bottom .navigation {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+}
+body.index #pagination.goobd-pagination-bottom .nav_total {
+  margin: 0 auto 0 0 !important;
+}
+
+@media (max-width: 700px) {
+  body:not(.login) #filter_form {
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 14px 0 0 !important;
+    padding: 14px !important;
+    line-height: 2.95 !important;
+  }
+  body:not(.login) #filter_form::before {
+    margin-bottom: 9px !important;
+  }
+  body:not(.login) #filter_form input[type="text"],
+  body:not(.login) #filter_form input[type="number"],
+  body:not(.login) #filter_form input:not([type]),
+  body:not(.login) #filter_form select {
+    max-width: calc(100% - 8px) !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    margin: 3px 4px !important;
+    line-height: 36px !important;
+  }
+  body:not(.login) #filter_form input.button,
+  body:not(.login) #filter_buttons input.button,
+  body:not(.login) #filter_form button {
+    min-height: 40px !important;
+    height: 40px !important;
+    padding: 0 15px !important;
+    line-height: 38px !important;
+  }
+  body:not(.login) #filter_form input[value="Search"],
+  body:not(.login) #filter_form input[value="Clear"] {
+    min-width: 88px !important;
+  }
+  body:not(.login) #pagination {
+    float: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 10px 0 0 !important;
+    padding: 12px 14px !important;
+    text-align: left !important;
+  }
+  body:not(.login) #pagination .nav_total {
+    margin-bottom: 7px !important;
+  }
+  body.index #pagination.goobd-pagination-bottom .navigation {
+    justify-content: center !important;
+  }
+  body.index #pagination.goobd-pagination-bottom .nav_total {
+    flex: 0 0 100% !important;
+    margin: 0 0 7px !important;
+    text-align: center !important;
+  }
+}
+
+
+/* =========================================================
+ * v1.8 — true phone layout
+ * YOURLS 1.10.4 does not provide the viewport declaration this
+ * theme needs, so plugin.php now adds it. These rules refine the
+ * card representation once the real device width is respected.
+ * ======================================================= */
+@media (max-width: 700px) {
+  /* Card rows are compact but preserve every dashboard field. */
+  #main_table > tbody > tr:not(.edit-row) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(64px, .55fr) !important;
+    width: 100% !important;
+    margin: 0 0 12px !important;
+    border-radius: 14px !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td {
+    box-sizing: border-box !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td.keyword,
+  #main_table > tbody > tr:not(.edit-row) > td.url,
+  #main_table > tbody > tr:not(.edit-row) > td.actions {
+    grid-column: 1 / -1 !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td.keyword {
+    padding: 12px 12px 9px !important;
+    border-bottom: 0 !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td.url {
+    padding: 0 12px 12px !important;
+    border-bottom: 1px solid #edf1f4 !important;
+  }
+
+  /* Date, IP and clicks form one compact metadata strip. */
+  #main_table > tbody > tr:not(.edit-row) > td.timestamp,
+  #main_table > tbody > tr:not(.edit-row) > td.ip,
+  #main_table > tbody > tr:not(.edit-row) > td.clicks {
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 9px 10px !important;
+    border-right: 1px solid #edf1f4 !important;
+    border-bottom: 1px solid #edf1f4 !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    overflow-wrap: anywhere !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td.clicks {
+    border-right: 0 !important;
+    text-align: center !important;
+  }
+
+  #main_table td.keyword::before,
+  #main_table td.url::before,
+  #main_table td.timestamp::before,
+  #main_table td.ip::before,
+  #main_table td.clicks::before,
+  #main_table td.actions::before {
+    margin-bottom: 4px !important;
+    font-size: 9.5px !important;
+    letter-spacing: .05em !important;
+  }
+
+  #main_table td.keyword > a {
+    color: var(--brand-blue) !important;
+    font-size: 14px !important;
+    font-weight: 750 !important;
+  }
+
+  #main_table td.url > a:first-child {
+    display: block !important;
+    color: var(--brand-blue) !important;
+    font-size: 13px !important;
+    font-weight: 650 !important;
+    line-height: 1.35 !important;
+  }
+  #main_table td.url small {
+    display: block !important;
+    margin-top: 4px !important;
+    color: #8794a3 !important;
+    font-size: 10.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Four actions fit on one row on normal phones. */
+  #main_table td.actions {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    padding: 10px 12px 12px !important;
+  }
+  #main_table td.actions::before {
+    grid-column: 1 / -1 !important;
+  }
+  #main_table td.actions .button {
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 0 5px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Give the main dashboard real mobile breathing room after viewport is fixed. */
+  body:not(.login) #wrap {
+    width: calc(100% - 24px) !important;
+  }
+  body:not(.login) #new_url {
+    margin-bottom: 16px !important;
+  }
+
+  /* Prevent any legacy table/search element from reintroducing page-level scroll. */
+  html, body,
+  body:not(.login) #wrap,
+  body:not(.login) main[role="main"] {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+}
+
+@media (max-width: 360px) {
+  #main_table > tbody > tr:not(.edit-row) {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td.timestamp {
+    grid-column: 1 / -1 !important;
+    border-right: 0 !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td.ip,
+  #main_table > tbody > tr:not(.edit-row) > td.clicks {
+    grid-column: auto !important;
+  }
+  #main_table td.actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* =========================================================
+ * v1.9 — mobile dashboard refinement
+ * - true in-card spacing (no clipped labels)
+ * - compact URL creator / filter controls
+ * - three-dot action menu on phones
+ * ======================================================= */
+@media (max-width: 700px) {
+  body:not(.login) #wrap {
+    box-sizing: border-box !important;
+    width: calc(100% - 20px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    overflow-x: visible !important;
+  }
+
+  body:not(.login) main[role="main"],
+  #main_table.tblSorter,
+  #main_table > tbody {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    transform: none !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow: visible !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) > td {
+    min-width: 0 !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    overflow: hidden !important;
+  }
+
+  #main_table td.keyword::before,
+  #main_table td.url::before,
+  #main_table td.timestamp::before,
+  #main_table td.ip::before,
+  #main_table td.clicks::before {
+    padding-left: 0 !important;
+    text-indent: 0 !important;
+  }
+
+  #main_table td.keyword > a,
+  #main_table td.url > a,
+  #main_table td.url small,
+  #main_table td.url small a {
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  /* Cleaner metadata strip. */
+  #main_table > tbody > tr:not(.edit-row) > td.timestamp,
+  #main_table > tbody > tr:not(.edit-row) > td.ip,
+  #main_table > tbody > tr:not(.edit-row) > td.clicks {
+    padding: 10px 10px !important;
+  }
+
+  /* Mobile action menu: one compact three-dot trigger. */
+  #main_table > tbody > tr:not(.edit-row) > td.actions {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    min-height: 54px !important;
+    padding: 9px 12px !important;
+    overflow: visible !important;
+  }
+  #main_table td.actions::before {
+    content: "Actions" !important;
+    margin: 0 auto 0 0 !important;
+  }
+  #main_table td.actions > a.button {
+    display: none !important;
+  }
+  #main_table td.actions.goobd-actions-open > a.button {
+    display: flex !important;
+  }
+  #main_table td.actions .goobd-actions-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    background: var(--surface-secondary) !important;
+    color: var(--brand-navy) !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+  }
+  #main_table td.actions .goobd-actions-menu {
+    position: absolute !important;
+    z-index: 50 !important;
+    top: calc(100% - 4px) !important;
+    right: 12px !important;
+    display: none !important;
+    width: 170px !important;
+    padding: 6px !important;
+    background: #fff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 14px 34px rgba(24,44,69,.14) !important;
+  }
+  #main_table td.actions.goobd-actions-open .goobd-actions-menu {
+    display: grid !important;
+    gap: 4px !important;
+  }
+  #main_table td.actions .goobd-actions-menu > .button {
+    display: flex !important;
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    justify-content: flex-start !important;
+    padding: 0 10px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: var(--text-ink) !important;
+    font-size: 12px !important;
+    text-indent: 0 !important;
+    box-shadow: none !important;
+  }
+  #main_table td.actions .goobd-actions-menu > .button:hover,
+  #main_table td.actions .goobd-actions-menu > .button:focus-visible {
+    background: var(--surface-secondary) !important;
+  }
+  #main_table td.actions .goobd-actions-menu > .button_delete {
+    color: var(--danger) !important;
+  }
+
+  /* URL creator: stack fields and keep everything inside the card. */
+  body:not(.login) #new_url {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+  }
+  body:not(.login) #new_url > div,
+  body:not(.login) #new_url_form {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 10px !important;
+    text-align: left !important;
+  }
+  body:not(.login) #new_url_form #add-url,
+  body:not(.login) #new_url_form input#add-url,
+  body:not(.login) #new_url_form input.text {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    margin: 6px 0 12px !important;
+  }
+  body:not(.login) #new_url_form input[name="keyword"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  body:not(.login) #new_url_form #add-button {
+    display: block !important;
+    width: 100% !important;
+    min-height: 42px !important;
+    margin: 8px 0 0 !important;
+  }
+
+  /* Filter: give native inline copy breathing room instead of clipping it. */
+  body:not(.login) #filter_form {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 16px !important;
+    overflow: visible !important;
+    text-indent: 0 !important;
+    line-height: 2.4 !important;
+  }
+  body:not(.login) #filter_form::before {
+    content: "Filter links" !important;
+    padding-left: 0 !important;
+  }
+  body:not(.login) #filter_form input[type="text"],
+  body:not(.login) #filter_form input[type="number"],
+  body:not(.login) #filter_form input:not([type]),
+  body:not(.login) #filter_form select {
+    max-width: 100% !important;
+  }
+
+  body:not(.login) #pagination {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* =========================================================
+ * v1.9 final overrides
+ * Preserve desktop actions, structure filter controls, and
+ * keep the mobile creator/cards fully inside the viewport.
+ * ======================================================= */
+
+/* JavaScript moves action links into a menu container. On desktop the
+ * container behaves like it is not there, so the four normal buttons remain. */
+#main_table td.actions .goobd-actions-toggle {
+  display: none;
+}
+#main_table td.actions .goobd-actions-menu {
+  display: contents;
+}
+
+/* Structured URL creator produced by plugin.php. */
+#new_url_form .goobd-url-grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 230px) auto;
+  align-items: end;
+  gap: 12px;
+  width: 100%;
+}
+#new_url_form .goobd-url-field,
+#new_url_form .goobd-url-action {
+  box-sizing: border-box;
+  min-width: 0;
+}
+#new_url_form .goobd-url-field label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+#new_url_form .goobd-url-field label strong {
+  color: var(--text-ink);
+  font-weight: 750;
+}
+#new_url_form .goobd-url-field input.text,
+#new_url_form .goobd-url-field #add-url,
+#new_url_form .goobd-url-field #add-keyword {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+#new_url_form .goobd-url-action #add-button {
+  width: auto !important;
+  margin: 0 !important;
+  white-space: nowrap;
+}
+
+/* Structured native YOURLS filters. */
+body:not(.login) #filter_form {
+  line-height: 1.4 !important;
+}
+body:not(.login) #filter_options {
+  width: 100%;
+}
+body:not(.login) #filter_options .goobd-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) minmax(190px, 1.15fr) minmax(90px, .55fr);
+  gap: 12px;
+  width: 100%;
+}
+body:not(.login) #filter_options .goobd-filter-field {
+  min-width: 0;
+}
+body:not(.login) #filter_options .goobd-filter-clicks,
+body:not(.login) #filter_options .goobd-filter-created {
+  grid-column: span 1;
+}
+body:not(.login) #filter_options .goobd-filter-label {
+  margin: 0 0 5px;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+body:not(.login) #filter_options .goobd-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+body:not(.login) #filter_options .goobd-filter-controls input,
+body:not(.login) #filter_options .goobd-filter-controls select {
+  min-width: 0 !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+}
+body:not(.login) #filter_options [name="search"] { flex: 1 1 140px; width: 100% !important; }
+body:not(.login) #filter_options [name="search_in"] { flex: 0 1 128px; }
+body:not(.login) #filter_options [name="sort_by"],
+body:not(.login) #filter_options [name="sort_order"] { flex: 1 1 0; }
+body:not(.login) #filter_options [name="perpage"] { width: 100% !important; }
+body:not(.login) #filter_options [name="click_filter"] { flex: 0 1 110px; }
+body:not(.login) #filter_options [name="click_limit"] { flex: 1 1 80px; width: 100% !important; }
+body:not(.login) #filter_options [name="date_filter"] { flex: 0 1 120px; }
+body:not(.login) #filter_options [name="date_first"],
+body:not(.login) #filter_options [name="date_second"] { flex: 1 1 110px; width: 100% !important; }
+body:not(.login) #filter_buttons {
+  display: flex !important;
+  float: none !important;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100% !important;
+  margin: 12px 0 0 !important;
+}
+body:not(.login) #filter_buttons input.button {
+  margin: 0 !important;
+}
+
+@media (min-width: 701px) {
+  body.index #filter_options .goobd-filter-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 14px 12px !important;
+  }
+  body.index #filter_options .goobd-filter-search {
+    grid-column: span 5 !important;
+  }
+  body.index #filter_options .goobd-filter-sort {
+    grid-column: span 5 !important;
+  }
+  body.index #filter_options .goobd-filter-rows {
+    grid-column: span 2 !important;
+  }
+  body.index #filter_options .goobd-filter-clicks {
+    grid-column: span 5 !important;
+  }
+  body.index #filter_options .goobd-filter-created {
+    grid-column: span 7 !important;
+  }
+  body.index #filter_options .goobd-filter-label {
+    margin-bottom: 6px !important;
+  }
+  body.index #filter_buttons input.button {
+    min-width: 78px !important;
+    height: 38px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  /* Clean, centered content column. */
+  body:not(.login) #wrap {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  body:not(.login) main[role="main"],
+  #main_table.tblSorter,
+  #main_table > tbody,
+  #main_table > tbody > tr:not(.edit-row),
+  body:not(.login) #new_url,
+  body:not(.login) #filter_form,
+  body:not(.login) #pagination {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #main_table > tbody > tr:not(.edit-row) {
+    overflow: visible !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Mobile actions: only the compact three-dot trigger is visible until opened. */
+  #main_table > tbody > tr:not(.edit-row) > td.actions {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    min-height: 54px !important;
+    padding: 8px 12px !important;
+    overflow: visible !important;
+  }
+  #main_table > tbody > tr:not(.edit-row) > td.actions.goobd-actions-open {
+    z-index: 60 !important;
+  }
+  #main_table td.actions::before {
+    flex: 1 1 auto;
+    margin: 0 !important;
+  }
+  #main_table td.actions .goobd-actions-toggle {
+    display: inline-flex !important;
+  }
+  #main_table td.actions .goobd-actions-menu {
+    display: none !important;
+  }
+  #main_table td.actions.goobd-actions-open .goobd-actions-menu {
+    display: grid !important;
+  }
+  #main_table td.actions .goobd-actions-menu > .button {
+    display: flex !important;
+  }
+
+  /* Creator: two stacked fields and one full-width action. */
+  body:not(.login) #new_url {
+    padding: 14px !important;
+    overflow: visible !important;
+  }
+  body:not(.login) #new_url > div,
+  body:not(.login) #new_url_form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  #new_url_form .goobd-url-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  #new_url_form .goobd-url-field,
+  #new_url_form .goobd-url-action {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  #new_url_form .goobd-url-field input.text,
+  #new_url_form .goobd-url-field #add-url,
+  #new_url_form .goobd-url-field #add-keyword {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: 42px !important;
+    margin: 0 !important;
+  }
+  #new_url_form .goobd-url-action #add-button {
+    display: block !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+  }
+
+  /* Filters: structured fields instead of legacy translated inline sentences. */
+  #main_table > tfoot,
+  #main_table > tfoot > tr,
+  #main_table > tfoot > tr > th {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+  }
+  body:not(.login) #filter_form {
+    margin: 0 0 14px !important;
+    padding: 16px !important;
+    overflow: visible !important;
+    border-radius: 14px !important;
+    box-shadow: 0 5px 14px rgba(24,44,69,.035) !important;
+  }
+  body.index #filter_form.goobd-filter-above-table {
+    margin: 14px 0 0 !important;
+    padding: 16px !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-grid {
+    grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr) !important;
+    gap: 14px 10px !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-search,
+  body:not(.login) #filter_options .goobd-filter-sort,
+  body:not(.login) #filter_options .goobd-filter-created {
+    grid-column: 1 / -1 !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-controls {
+    gap: 8px !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-search .goobd-filter-controls {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-sort .goobd-filter-controls,
+  body:not(.login) #filter_options .goobd-filter-created .goobd-filter-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-search [name="search"],
+  body:not(.login) #filter_options .goobd-filter-search [name="search_in"] {
+    grid-column: 1 / -1 !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-clicks .goobd-filter-controls {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.1fr) minmax(72px, .9fr) !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-created [name="date_second"] {
+    grid-column: 2 !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-controls input,
+  body:not(.login) #filter_options .goobd-filter-controls select {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    margin: 0 !important;
+  }
+  body:not(.login) #filter_buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px !important;
+  }
+  body:not(.login) #filter_buttons input.button {
+    width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+  body:not(.login) #pagination {
+    margin-top: 10px !important;
+    padding: 12px 14px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  body:not(.login) #filter_options .goobd-filter-grid {
+    grid-template-columns: 1fr !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-field,
+  body:not(.login) #filter_options .goobd-filter-search,
+  body:not(.login) #filter_options .goobd-filter-sort,
+  body:not(.login) #filter_options .goobd-filter-created {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  body:not(.login) #filter_options .goobd-filter-grid {
+    grid-template-columns: 1fr !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-field,
+  body:not(.login) #filter_options .goobd-filter-search,
+  body:not(.login) #filter_options .goobd-filter-sort,
+  body:not(.login) #filter_options .goobd-filter-created {
+    grid-column: 1 !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-controls,
+  body:not(.login) #filter_options .goobd-filter-search .goobd-filter-controls,
+  body:not(.login) #filter_options .goobd-filter-sort .goobd-filter-controls,
+  body:not(.login) #filter_options .goobd-filter-created .goobd-filter-controls {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-search [name="search"] {
+    grid-column: 1 !important;
+  }
+  body:not(.login) #filter_options .goobd-filter-created [name="date_second"] {
+    grid-column: 1 !important;
+  }
+}
+
+/* =========================================================
+ * v1.18 — Plugins page
+ * Deliberately scoped to body.plugins so the URL-management
+ * table and its mobile action-card behavior remain unchanged.
+ * ======================================================= */
+body.plugins main[role="main"] > h2 {
+  margin: 0 0 12px;
+  color: var(--brand-navy);
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+body.plugins .goobd-plugin-toolbar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 11px 12px 11px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-summary);
+}
+body.plugins #plugin_summary {
+  min-width: 0;
+  margin: 0 !important;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+body.plugins #plugin_summary strong {
+  color: var(--brand-navy);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+body.plugins #toggle_plugins {
+  display: none !important;
+}
+body.plugins .goobd-plugin-filter {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+body.plugins .goobd-plugin-filter-label {
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+body.plugins #goobd-plugin-status {
+  box-sizing: border-box;
+  width: 138px;
+  height: 38px;
+  margin: 0;
+  padding: 0 34px 0 11px;
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--brand-navy);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+}
+body.plugins #goobd-plugin-status:focus {
+  outline: 0;
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(65,106,184,.11);
+}
+
+body.plugins #main_table.tblSorter {
+  box-sizing: border-box;
+  display: table;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  table-layout: fixed;
+  overflow: hidden;
+  border: 1px solid var(--border) !important;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 13px;
+  box-shadow: var(--shadow-summary);
+}
+body.plugins #main_table thead th:nth-child(1) { width: 20%; }
+body.plugins #main_table thead th:nth-child(2) { width: 9%; }
+body.plugins #main_table thead th:nth-child(3) { width: 39%; }
+body.plugins #main_table thead th:nth-child(4) { width: 17%; }
+body.plugins #main_table thead th:nth-child(5) { width: 15%; }
+body.plugins #main_table thead tr th {
+  box-sizing: border-box;
+  padding: 11px 12px !important;
+  background: #f4f7fa !important;
+  border-right: 1px solid var(--border) !important;
+  border-bottom: 1px solid var(--border) !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  white-space: normal;
+}
+body.plugins #main_table thead tr th:last-child {
+  border-right: 0 !important;
+}
+body.plugins #main_table tbody tr.plugin[hidden] {
+  display: none !important;
+}
+body.plugins #main_table tbody tr.plugin td {
+  box-sizing: border-box;
+  min-width: 0 !important;
+  padding: 14px 12px !important;
+  background: var(--surface) !important;
+  border-right: 1px solid #e7edf2 !important;
+  border-bottom: 1px solid #e7edf2 !important;
+  color: var(--text-ink) !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  vertical-align: top !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+body.plugins #main_table tbody tr.plugin td:last-child {
+  border-right: 0 !important;
+}
+body.plugins #main_table tbody tr.plugin:last-child td {
+  border-bottom: 0 !important;
+}
+body.plugins #main_table tbody tr.plugin:hover td {
+  background: #f9fbfc !important;
+}
+body.plugins #main_table td.plugin_name a,
+body.plugins #main_table td.plugin_author a {
+  color: var(--brand-blue) !important;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+body.plugins #main_table td.plugin_name a:hover,
+body.plugins #main_table td.plugin_author a:hover {
+  text-decoration: underline;
+}
+body.plugins #main_table td.plugin_version {
+  font-variant-numeric: tabular-nums;
+}
+body.plugins #main_table td.plugin_desc {
+  max-width: 0;
+  color: var(--text-ink) !important;
+}
+body.plugins #main_table td.plugin_desc a,
+body.plugins #main_table td.plugin_desc em,
+body.plugins #main_table td.plugin_desc small,
+body.plugins #main_table td.plugin_desc code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+body.plugins #main_table td.plugin_desc small {
+  display: block;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid #edf1f4;
+  color: var(--text-muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+body.plugins #main_table td.plugin_actions.actions {
+  min-width: 0 !important;
+  width: auto !important;
+  white-space: normal !important;
+}
+body.plugins #main_table td.plugin_actions > a {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 92px;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 13px;
+  background: var(--brand-navy);
+  border: 1px solid var(--brand-navy);
+  border-radius: 8px;
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(24,44,69,.10);
+  transition: background-color .14s ease, border-color .14s ease, transform .14s ease;
+}
+body.plugins #main_table td.plugin_actions > a:hover,
+body.plugins #main_table td.plugin_actions > a:focus-visible {
+  background: #243e5e;
+  border-color: #243e5e;
+  text-decoration: none;
+}
+body.plugins #main_table td.plugin_actions > a:active {
+  transform: translateY(1px);
+}
+body.plugins #main_table tr.active td.plugin_actions > a {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff !important;
+}
+body.plugins #main_table tr.active td.plugin_actions > a:hover,
+body.plugins #main_table tr.active td.plugin_actions > a:focus-visible {
+  background: #8f1d14;
+  border-color: #8f1d14;
+}
+
+body.plugins .goobd-plugin-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(250px, .55fr);
+  gap: 12px;
+  margin: 14px 0 0;
+}
+body.plugins .goobd-plugin-footer-card {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 15px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-summary);
+}
+body.plugins .goobd-plugin-footer-card h3 {
+  margin: 0 0 6px;
+  color: var(--brand-navy);
+  font-size: 13px;
+  line-height: 1.35;
+}
+body.plugins .goobd-plugin-footer-card p {
+  margin: 0 !important;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+body.plugins .goobd-plugin-footer-card code {
+  padding: 2px 5px;
+  background: var(--surface-secondary);
+  border-radius: 5px;
+  color: var(--brand-navy);
+  font-size: 10.5px;
+}
+
+@media (max-width: 700px) {
+  body.plugins .goobd-plugin-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px;
+  }
+  body.plugins #plugin_summary {
+    font-size: clamp(10px, 2.8vw, 11.5px);
+    line-height: 1.35;
+  }
+  body.plugins .goobd-plugin-filter-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+  body.plugins #goobd-plugin-status {
+    width: 116px;
+    height: 40px;
+    padding-left: 9px;
+    font-size: 11px;
+  }
+  body.plugins #main_table.tblSorter,
+  body.plugins #main_table > tbody {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+  body.plugins #main_table > thead {
+    display: none !important;
+  }
+  body.plugins #main_table > tbody > tr.plugin {
+    box-sizing: border-box !important;
+    position: static !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 0 12px !important;
+    padding: 0 !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 13px !important;
+    box-shadow: var(--shadow-summary) !important;
+    overflow: hidden !important;
+  }
+  body.plugins #main_table > tbody > tr.plugin[hidden] {
+    display: none !important;
+  }
+  body.plugins #main_table > tbody > tr.plugin > td {
+    box-sizing: border-box !important;
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e7edf2 !important;
+    color: var(--text-ink) !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    text-align: left !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    overflow-wrap: anywhere !important;
+  }
+  body.plugins #main_table td.plugin_name {
+    grid-column: 1;
+    padding: 14px 8px 12px 14px !important;
+    border-bottom: 0 !important;
+  }
+  body.plugins #main_table td.plugin_name a {
+    display: block;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  body.plugins #main_table td.plugin_version {
+    grid-column: 2;
+    padding: 14px 14px 12px 8px !important;
+    border-bottom: 0 !important;
+    color: var(--text-muted) !important;
+    font-size: 11px !important;
+    text-align: right !important;
+  }
+  body.plugins #main_table td.plugin_version::before {
+    content: "v";
+    color: var(--text-muted);
+  }
+  body.plugins #main_table td.plugin_desc {
+    grid-column: 1 / -1;
+    max-width: none !important;
+    padding: 12px 14px !important;
+    background: #fafcfd !important;
+    border-top: 1px solid #e7edf2 !important;
+  }
+  body.plugins #main_table td.plugin_desc::before,
+  body.plugins #main_table td.plugin_author::before,
+  body.plugins #main_table td.plugin_actions::before {
+    display: block;
+    margin: 0 0 5px !important;
+    color: var(--text-muted) !important;
+    font-size: 9.5px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+  }
+  body.plugins #main_table td.plugin_desc::before { content: "Description" !important; }
+  body.plugins #main_table td.plugin_author::before { content: "Author" !important; }
+  body.plugins #main_table td.plugin_actions::before { content: "Action" !important; }
+  body.plugins #main_table td.plugin_author {
+    grid-column: 1 / -1;
+    padding: 12px 14px !important;
+  }
+  body.plugins #main_table td.plugin_actions.actions {
+    grid-column: 1 / -1;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    padding: 12px 14px !important;
+    border-bottom: 0 !important;
+    text-align: left !important;
+  }
+  body.plugins #main_table td.plugin_actions::before {
+    flex: 0 0 auto;
+    margin: 0 !important;
+    text-align: left;
+  }
+  body.plugins #main_table td.plugin_actions > a {
+    flex: 0 0 auto;
+    min-width: 104px;
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+  body.plugins .goobd-plugin-footer {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 2px;
+  }
+  body.plugins .goobd-plugin-footer-card {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  body.plugins .goobd-plugin-toolbar {
+    grid-template-columns: minmax(0, 1fr) 104px;
+  }
+  body.plugins #goobd-plugin-status {
+    width: 104px;
+  }
+  body.plugins #main_table td.plugin_author,
+  body.plugins #main_table td.plugin_actions.actions {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* =========================================================
+ * v1.19 — URL delete confirmation
+ * Overrides the native fixed-size dialog only on the URL
+ * management page; native confirmation handlers stay intact.
+ * ======================================================= */
+body.index #delete-confirm-dialog {
+  box-sizing: border-box;
+  top: 50% !important;
+  bottom: auto !important;
+  width: min(520px, calc(100vw - 32px)) !important;
+  max-width: 520px !important;
+  height: fit-content !important;
+  min-height: 0 !important;
+  max-height: calc(100vh - 40px) !important;
+  max-height: calc(100dvh - 40px) !important;
+  margin: auto !important;
+  padding: 0 !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  box-shadow: 0 24px 64px rgba(16,32,51,.24) !important;
+  overflow: hidden !important;
+  transform: translateY(-50%);
+}
+body.index #delete-confirm-dialog > div[name="dialog_title"] {
+  box-sizing: border-box;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 17px 20px !important;
+  background: var(--surface) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.015em;
+  text-align: left !important;
+}
+body.index #delete-confirm-dialog div.confirm-message {
+  box-sizing: border-box;
+  float: none !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: calc(100vh - 190px) !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  background: var(--surface) !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+body.index #delete-confirm-dialog div.confirm-message > p {
+  margin: 0 0 13px !important;
+  color: var(--text-ink) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+body.index #delete-confirm-dialog div.confirm-message > p strong {
+  color: var(--brand-navy) !important;
+  font-weight: 800 !important;
+}
+body.index #delete-confirm-dialog div.confirm-message ul {
+  box-sizing: border-box;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  background: #f8fafc !important;
+  border: 1px solid var(--border) !important;
+  border-left: 1px solid var(--border) !important;
+  border-radius: 9px !important;
+  list-style: none !important;
+}
+body.index #delete-confirm-dialog div.confirm-message ul li {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-width: 0;
+  margin: 0 0 8px !important;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #e7edf2;
+  color: var(--text-muted) !important;
+  font-size: 11.5px !important;
+  font-weight: 700;
+  line-height: 1.4 !important;
+}
+body.index #delete-confirm-dialog div.confirm-message ul li:last-child {
+  margin-bottom: 0 !important;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+body.index #delete-confirm-dialog div.confirm-message ul li span {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 600;
+  line-height: 1.4 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+body.index #delete-confirm-dialog div.button-group {
+  box-sizing: border-box;
+  float: none !important;
+  display: flex;
+  width: 100% !important;
+  height: auto !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0 !important;
+  padding: 13px 20px !important;
+  background: #f7f9fb !important;
+  border: 0 !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  text-align: right !important;
+}
+body.index #delete-confirm-dialog div.button-group input.button {
+  box-sizing: border-box;
+  width: auto !important;
+  min-width: 82px;
+  height: 38px !important;
+  min-height: 38px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  background: var(--surface) !important;
+  border: 1px solid #cfd8e2 !important;
+  border-radius: 8px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 750 !important;
+  line-height: 36px !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+body.index #delete-confirm-dialog div.button-group input[type="reset"] {
+  order: 1;
+}
+body.index #delete-confirm-dialog div.button-group input.primary {
+  order: 2;
+  background: var(--danger) !important;
+  border-color: var(--danger) !important;
+  color: #fff !important;
+}
+body.index #delete-confirm-dialog div.button-group input.button:hover,
+body.index #delete-confirm-dialog div.button-group input.button:focus-visible {
+  background: var(--surface-secondary) !important;
+  border-color: #bdc9d5 !important;
+}
+body.index #delete-confirm-dialog div.button-group input.primary:hover,
+body.index #delete-confirm-dialog div.button-group input.primary:focus-visible {
+  background: #8f1d14 !important;
+  border-color: #8f1d14 !important;
+}
+body.index #delete-confirm-dialog div.button-group input.button:focus-visible {
+  outline: 3px solid rgba(65,106,184,.22) !important;
+  outline-offset: 2px;
+}
+body.index #delete-confirm-dialog::backdrop {
+  background: rgba(16,32,51,.58) !important;
+  opacity: 1 !important;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 700px) {
+  body.index #delete-confirm-dialog {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    height: fit-content !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    border-radius: 14px !important;
+  }
+  body.index #delete-confirm-dialog > div[name="dialog_title"] {
+    padding: 15px 16px !important;
+    font-size: 16px !important;
+  }
+  body.index #delete-confirm-dialog div.confirm-message {
+    max-height: calc(100vh - 168px) !important;
+    max-height: calc(100dvh - 168px) !important;
+    padding: 16px !important;
+  }
+  body.index #delete-confirm-dialog div.confirm-message ul {
+    padding: 11px 12px !important;
+  }
+  body.index #delete-confirm-dialog div.confirm-message ul li {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 7px;
+  }
+  body.index #delete-confirm-dialog div.button-group {
+    padding: 12px 16px !important;
+  }
+  body.index #delete-confirm-dialog div.button-group input.button {
+    min-width: 88px;
+    height: 40px !important;
+    min-height: 40px !important;
+    line-height: 38px !important;
+  }
+}
+
+/* =========================================================
+ * v1.21 — Statistics / info experience
+ * All layout changes are isolated to body.infos. Native tab
+ * links, details toggles, chart containers and share fields
+ * remain the original YOURLS elements.
+ * ======================================================= */
+body.infos .goobd-stats-hero {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-summary);
+}
+body.infos #informations {
+  margin: 0 0 16px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: clamp(18px, 2vw, 23px) !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -.02em;
+  overflow-wrap: anywhere;
+  word-break: normal !important;
+}
+body.infos .goobd-stats-links {
+  display: grid;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #e7edf2;
+}
+body.infos .goobd-stats-link-row {
+  box-sizing: border-box;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+}
+body.infos .goobd-stats-link-row span.label {
+  flex: 0 0 82px;
+  width: auto !important;
+  color: var(--text-muted) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+body.infos .goobd-stats-link-row img {
+  flex: 0 0 16px;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+}
+body.infos .goobd-stats-link-row a {
+  min-width: 0;
+  color: var(--brand-blue) !important;
+  font-weight: 700 !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-decoration: none !important;
+}
+body.infos .goobd-stats-link-row a:hover {
+  text-decoration: underline !important;
+}
+
+body.infos #tabs {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  overflow: visible !important;
+}
+body.infos #tabs .goobd-stats-tabs-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  overflow: visible !important;
+}
+body.infos .goobd-stats-mobile-nav {
+  display: none;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist {
+  box-sizing: border-box;
+  float: none !important;
+  display: flex !important;
+  width: 100%;
+  align-items: flex-end;
+  gap: 6px;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  border-bottom: 1px solid var(--border) !important;
+  list-style: none !important;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li,
+body.infos #tabs ul#headers.goobd-stats-tablist li h2 {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li {
+  flex: 0 0 auto;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li a {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  padding: 9px 14px !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-bottom: 0 !important;
+  border-radius: 10px 10px 0 0 !important;
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li a h2 {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: 12.5px !important;
+  font-weight: inherit !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li a:hover {
+  background: var(--surface-secondary) !important;
+  color: var(--brand-navy) !important;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li a.selected,
+body.infos #tabs ul#headers.goobd-stats-tablist li a[aria-current="page"] {
+  margin-bottom: -1px;
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  border-bottom: 1px solid var(--surface) !important;
+  color: var(--brand-navy) !important;
+}
+body.infos #tabs ul#headers.goobd-stats-tablist li a:focus-visible {
+  outline: 3px solid var(--brand-yellow) !important;
+  outline-offset: 2px;
+}
+
+body.infos #tabs > .tab {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 18px !important;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  box-shadow: var(--shadow-summary);
+  overflow: visible !important;
+}
+body.infos #tabs > .tab > h2 {
+  margin: 0 0 14px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+}
+body.infos #tabs .goobd-stats-layout {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 12px 0 !important;
+  table-layout: fixed;
+}
+body.infos #tabs .goobd-stats-layout > tbody > tr > .goobd-stats-panel {
+  box-sizing: border-box !important;
+  width: 50% !important;
+  min-width: 0 !important;
+  padding: 16px !important;
+  background: #fafcfd !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  vertical-align: top !important;
+  overflow: hidden !important;
+}
+body.infos #tabs .goobd-stats-panel h3,
+body.infos #tabs .goobd-stats-chart-section > h3 {
+  margin: 0 0 10px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+}
+body.infos #tabs .goobd-stats-panel p {
+  margin: 8px 0 12px !important;
+  color: var(--text-muted) !important;
+  font-size: 11.5px !important;
+  line-height: 1.55 !important;
+  overflow-wrap: anywhere;
+}
+body.infos #tabs .goobd-stats-panel a {
+  color: var(--brand-blue) !important;
+  overflow-wrap: anywhere;
+}
+
+body.infos #stats_lines {
+  box-sizing: border-box;
+  float: none !important;
+  display: flex !important;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  list-style: none !important;
+}
+body.infos #stats_lines li {
+  display: block !important;
+  margin: 0 !important;
+}
+body.infos #stats_lines li a {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  padding: 7px 10px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  color: var(--text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+}
+body.infos #stats_lines li a:hover {
+  background: var(--surface-secondary) !important;
+  color: var(--brand-navy) !important;
+}
+body.infos #stats_lines li a.selected {
+  background: var(--brand-navy) !important;
+  border-color: var(--brand-navy) !important;
+  color: #fff !important;
+}
+body.infos .goobd-stats-chart-section,
+body.infos .goobd-stats-chart-frame {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
+body.infos .goobd-stats-chart-section {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: thin;
+}
+body.infos .goobd-stats-chart-frame {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+body.infos #historical_clicks {
+  box-sizing: border-box;
+  float: none !important;
+  width: 100%;
+  margin: 0 0 16px !important;
+  padding: 0 !important;
+}
+body.infos #historical_clicks li {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  background: transparent !important;
+  border-bottom: 1px solid #e7edf2;
+  color: var(--text-muted) !important;
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+}
+body.infos #historical_clicks li:last-child {
+  border-bottom: 0;
+}
+body.infos #historical_clicks .historical_link,
+body.infos #historical_clicks .historical_count {
+  min-width: 0 !important;
+}
+body.infos #historical_clicks .historical_count {
+  color: var(--text-ink);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+body.infos #details_clicks,
+body.infos #details_countries,
+body.infos [id^="details_url"],
+body.infos #details_various {
+  box-sizing: border-box;
+  margin: 10px 0 0 !important;
+  padding: 10px 12px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+body.infos #details_clicks ul,
+body.infos #details_countries,
+body.infos [id^="details_url"],
+body.infos #details_various {
+  padding-left: 18px !important;
+}
+body.infos #details_clicks li,
+body.infos #details_countries li,
+body.infos [id^="details_url"] li,
+body.infos #details_various li {
+  margin: 5px 0 !important;
+  overflow-wrap: anywhere;
+}
+body.infos #stat_tab_location .goobd-stats-panel img,
+body.infos #stat_tab_sources .goobd-stats-panel img {
+  max-width: 100%;
+}
+body.infos #stat_tab_sources .sites_list,
+body.infos #stat_tab_sources #sites_various {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid #e7edf2;
+  overflow-wrap: anywhere;
+}
+
+body.infos #stat_tab_share {
+  padding-bottom: 18px !important;
+}
+body.infos #stat_tab_share #shareboxes {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+body.infos #stat_tab_share #shareboxes .share {
+  box-sizing: border-box !important;
+  float: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 190px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  background: #fafcfd !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+body.infos #stat_tab_share #shareboxes .share h3 {
+  margin: 0 0 12px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.3 !important;
+}
+body.infos #stat_tab_share #copylink,
+body.infos #stat_tab_share #tweet_body {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 10px 11px !important;
+  background-color: var(--surface) !important;
+  border: 1.5px solid #cfd8e2 !important;
+  border-radius: 9px !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+body.infos #stat_tab_share #copylink {
+  min-height: 40px !important;
+  padding-right: 38px !important;
+  background-position: right 10px center !important;
+}
+body.infos #stat_tab_share #tweet_body {
+  float: none !important;
+  display: block !important;
+  min-height: 86px !important;
+  height: 86px !important;
+  resize: vertical;
+}
+body.infos #stat_tab_share #origlink,
+body.infos #stat_tab_share #statlink {
+  display: inline !important;
+  width: auto !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+body.infos #stat_tab_share #charcount {
+  display: inline-block !important;
+  margin: 0 0 6px !important;
+  padding: 2px 7px !important;
+  background: #eef3fb !important;
+  border-radius: 999px;
+  color: var(--brand-blue) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+}
+body.infos #stat_tab_share #share_links {
+  display: flex !important;
+  clear: both !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 0 !important;
+  overflow: visible !important;
+}
+body.infos #stat_tab_share #share_links a {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  min-height: 34px;
+  align-items: center;
+  padding: 7px 10px 7px 30px !important;
+  background-color: var(--surface-secondary) !important;
+  background-position: 9px center !important;
+  background-repeat: no-repeat !important;
+  background-size: 16px 16px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  color: var(--brand-navy) !important;
+  font-size: 11.5px !important;
+  font-weight: 750 !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 900px) {
+  body.infos #tabs .goobd-stats-layout,
+  body.infos #tabs .goobd-stats-layout > tbody,
+  body.infos #tabs .goobd-stats-layout > tbody > tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  body.infos #tabs .goobd-stats-layout {
+    border-spacing: 0 !important;
+  }
+  body.infos #tabs .goobd-stats-layout > tbody > tr > .goobd-stats-panel {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 0 12px !important;
+  }
+  body.infos #tabs .goobd-stats-layout > tbody > tr > .goobd-stats-panel:last-child {
+    margin-bottom: 0 !important;
+  }
+  body.infos #stat_tab_share #shareboxes {
+    grid-template-columns: 1fr;
+  }
+  body.infos #stat_tab_share #shareboxes .share {
+    min-height: 0 !important;
+  }
+}
+
+@media (max-width: 700px) {
+  body.infos .goobd-stats-hero {
+    margin-bottom: 14px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+  body.infos #informations {
+    margin-bottom: 13px !important;
+    font-size: 18px !important;
+  }
+  body.infos .goobd-stats-links {
+    gap: 10px;
+    padding-top: 12px;
+  }
+  body.infos .goobd-stats-link-row {
+    display: grid;
+    grid-template-columns: 70px 16px minmax(0, 1fr);
+    gap: 6px;
+    font-size: 11.5px !important;
+  }
+  body.infos .goobd-stats-link-row span.label {
+    width: auto !important;
+  }
+  body.infos #tabs .goobd-stats-tabs-wrap {
+    display: none !important;
+  }
+  body.infos .goobd-stats-mobile-nav {
+    box-sizing: border-box;
+    display: grid;
+    gap: 6px;
+    width: 100%;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+  }
+  body.infos .goobd-stats-mobile-nav label {
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: .055em;
+    text-transform: uppercase;
+  }
+  body.infos #goobd-stats-section {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 0 38px 0 12px;
+    background-color: var(--surface-secondary);
+    border: 1px solid #cfd8e2;
+    border-radius: 9px;
+    color: var(--brand-navy);
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 750;
+  }
+  body.infos #goobd-stats-section:focus {
+    outline: 0;
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(65,106,184,.11);
+  }
+  body.infos #tabs > .tab {
+    padding: 12px !important;
+    border-radius: 0 0 12px 12px;
+  }
+  body.infos #tabs .goobd-stats-layout > tbody > tr > .goobd-stats-panel {
+    padding: 13px !important;
+    border-radius: 10px !important;
+  }
+  body.infos #stats_lines {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 3px !important;
+  }
+  body.infos #stats_lines li {
+    flex: 0 0 auto;
+  }
+  body.infos #stats_lines li a {
+    min-height: 36px;
+  }
+  body.infos #historical_clicks li {
+    grid-template-columns: minmax(82px, 1fr) auto;
+  }
+  body.infos #historical_clicks li > :last-child:not(.historical_count) {
+    grid-column: 1 / -1;
+  }
+  body.infos #stat_tab_share #shareboxes .share {
+    padding: 14px !important;
+  }
+  body.infos #stat_tab_share #tweet_body {
+    min-height: 96px !important;
+    height: 96px !important;
+  }
+  body.infos #stat_tab_share #share_links a {
+    min-height: 38px;
+  }
+}
+
+@media (max-width: 380px) {
+  body.infos .goobd-stats-link-row {
+    grid-template-columns: 1fr 16px minmax(0, 1fr);
+  }
+  body.infos .goobd-stats-link-row span.label {
+    grid-column: 1 / -1;
+  }
+  body.infos #historical_clicks li {
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+  }
+}
+
+/* =========================================================
+ * v1.23.2 — Tools page and API signature reset
+ * Scoped to body.tools. Native javascript: bookmarklet URLs,
+ * signature values and documentation links are not replaced.
+ * ======================================================= */
+body.tools main.sub_wrap.goobd-tools-page {
+  box-sizing: border-box;
+  display: grid;
+  gap: 16px;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 0 24px !important;
+  color: var(--text-ink) !important;
+  font-family: var(--font-sans) !important;
+  text-align: left !important;
+}
+body.tools .goobd-tools-section {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-summary);
+}
+body.tools .goobd-tools-section > h2 {
+  margin: 0 0 14px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 21px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.02em;
+}
+body.tools .goobd-tools-section h3 {
+  margin: 20px 0 9px !important;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+}
+body.tools .goobd-tools-section > h2 + p,
+body.tools .goobd-tools-section > h3 + p {
+  margin-top: 0 !important;
+}
+body.tools .goobd-tools-section p,
+body.tools .goobd-tools-section li {
+  color: var(--text-muted) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 12.5px !important;
+  line-height: 1.62 !important;
+}
+body.tools .goobd-tools-section p {
+  max-width: 82ch;
+  margin: 10px 0 !important;
+}
+body.tools .goobd-tools-section a:not(.bookmarklet) {
+  color: var(--brand-blue) !important;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+body.tools .goobd-tools-section span,
+body.tools .goobd-tools-section tt {
+  padding: 1px 5px;
+  background: #eef3fb;
+  border-radius: 5px;
+  color: #294f8f;
+}
+
+body.tools .goobd-tools-bookmarklets > ul:first-of-type {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 14px !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+body.tools .goobd-tools-bookmarklets > ul:first-of-type > li {
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 11px 12px !important;
+  background: #fafcfd;
+  border: 1px solid #e7edf2;
+  border-radius: 9px;
+}
+body.tools .goobd-tools-note {
+  box-sizing: border-box;
+  max-width: none !important;
+  margin: 14px 0 !important;
+  padding: 12px 14px;
+  background: #f7f9fb;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-muted) !important;
+}
+body.tools .goobd-tools-note strong {
+  color: var(--brand-navy);
+}
+
+body.tools table.goobd-bookmarklet-table.tblSorter {
+  box-sizing: border-box;
+  width: min(780px, 100%) !important;
+  max-width: 100% !important;
+  margin: 12px 0 20px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 11px;
+  table-layout: fixed;
+  overflow: hidden;
+}
+body.tools table.goobd-bookmarklet-table thead th,
+body.tools table.goobd-bookmarklet-table thead td {
+  box-sizing: border-box;
+  padding: 10px 12px !important;
+  background: #f4f7fa !important;
+  border: 0 !important;
+  border-right: 1px solid var(--border) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--brand-navy) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+  text-align: left !important;
+}
+body.tools table.goobd-bookmarklet-table thead td {
+  width: 22%;
+}
+body.tools table.goobd-bookmarklet-table thead th {
+  width: 39%;
+}
+body.tools table.goobd-bookmarklet-table thead th:last-child {
+  border-right: 0 !important;
+}
+body.tools table.goobd-bookmarklet-table tbody th,
+body.tools table.goobd-bookmarklet-table tbody td {
+  box-sizing: border-box;
+  padding: 12px !important;
+  background: var(--surface) !important;
+  border: 0 !important;
+  border-right: 1px solid #e7edf2 !important;
+  border-bottom: 1px solid #e7edf2 !important;
+  color: var(--text-ink) !important;
+  font-size: 11.5px !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+body.tools table.goobd-bookmarklet-table tbody th {
+  background: #fafcfd !important;
+  color: var(--brand-navy) !important;
+  font-weight: 800 !important;
+}
+body.tools table.goobd-bookmarklet-table tbody tr:last-child th,
+body.tools table.goobd-bookmarklet-table tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+body.tools table.goobd-bookmarklet-table tbody td:last-child {
+  border-right: 0 !important;
+}
+body.tools a.bookmarklet {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  margin: 0 !important;
+  padding: 8px 12px 8px 34px !important;
+  background-color: var(--surface-secondary) !important;
+  background-position: 10px center !important;
+  background-size: 16px 16px !important;
+  border: 1px solid #cfd8e2 !important;
+  border-radius: 8px !important;
+  color: var(--brand-blue) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 750 !important;
+  line-height: 1.25 !important;
+  text-decoration: none !important;
+  cursor: grab;
+}
+body.tools a.bookmarklet:hover,
+body.tools a.bookmarklet:focus-visible {
+  background-color: #e2e9f0 !important;
+  border-color: #bdc9d5 !important;
+  text-decoration: none !important;
+}
+body.tools a.bookmarklet:focus-visible {
+  outline: 3px solid var(--brand-yellow) !important;
+  outline-offset: 2px;
+}
+body.tools a.bookmarklet:active {
+  cursor: grabbing;
+}
+body.tools .goobd-tools-bookmarklet-actions {
+  display: flex;
+  max-width: none !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px !important;
+}
+
+body.tools .goobd-tools-prefix {
+  background: #f8fafc;
+}
+body.tools .goobd-tools-prefix p:last-child {
+  margin-bottom: 0 !important;
+  font-size: 11.5px !important;
+}
+
+body.tools .goobd-tools-api-overview {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+  gap: 14px;
+  align-items: stretch;
+  width: 100%;
+  margin: 4px 0 18px;
+}
+body.tools .goobd-tools-api-summary {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 16px;
+  background: #fafcfd;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+body.tools .goobd-tools-api-summary > p:first-child {
+  margin-top: 0 !important;
+}
+body.tools .goobd-tools-api-summary > p:last-child {
+  margin-bottom: 0 !important;
+}
+
+body.tools .goobd-tools-token {
+  box-sizing: border-box;
+  display: flex;
+  max-width: none !important;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 11px 12px;
+  background: #f7f9fb;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+body.tools .goobd-tools-token code {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 7px;
+  background: var(--brand-navy);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+body.tools .goobd-signature-reset {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  background: #fafcfd;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+body.tools .goobd-signature-reset-copy h3 {
+  margin: 0 0 5px !important;
+  font-size: 14px !important;
+}
+body.tools .goobd-signature-reset-copy p {
+  max-width: 70ch;
+  margin: 0 !important;
+}
+body.tools .goobd-signature-status {
+  box-sizing: border-box;
+  max-width: none !important;
+  margin: 12px 0 0 !important;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 650;
+}
+body.tools .goobd-signature-status-success {
+  background: #edf8f3;
+  border-color: #b9dfcf;
+  color: var(--success) !important;
+}
+body.tools .goobd-signature-status-error {
+  background: #fff7f6;
+  border-color: #efc7c3;
+  color: var(--danger) !important;
+}
+body.tools .goobd-signature-reset-form {
+  margin: 14px 0 0 !important;
+}
+body.tools .goobd-signature-confirm {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  max-width: 70ch;
+  color: var(--text-ink);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+  cursor: pointer;
+}
+body.tools .goobd-signature-confirm input {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  margin: 1px 0 0;
+  accent-color: var(--brand-navy);
+}
+body.tools .goobd-signature-reset-actions {
+  display: flex;
+  margin-top: 13px;
+}
+body.tools .goobd-signature-reset-button.button {
+  box-sizing: border-box;
+  min-height: 40px;
+  margin: 0 !important;
+  padding: 9px 14px !important;
+  background: var(--danger) !important;
+  border: 1px solid var(--danger) !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11.5px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+body.tools .goobd-signature-reset-button.button:hover,
+body.tools .goobd-signature-reset-button.button:focus-visible {
+  background: #991b14 !important;
+  border-color: #991b14 !important;
+}
+body.tools .goobd-signature-reset-button.button:focus-visible {
+  outline: 3px solid var(--brand-yellow) !important;
+  outline-offset: 2px;
+}
+body.tools .goobd-signature-reset-button.button:disabled,
+body.tools .goobd-signature-confirm input:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+body.tools .goobd-tools-api-list {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: 12px;
+  margin: 16px 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+body.tools .goobd-tools-api-list > li {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 14px !important;
+  background: #fafcfd;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+body.tools .goobd-tools-api-list > li > h3 {
+  margin-top: 0 !important;
+}
+body.tools .goobd-tools-api code,
+body.tools .goobd-tools-api pre,
+body.tools .goobd-tools-api tt {
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace !important;
+}
+body.tools .goobd-tools-api p > code,
+body.tools .goobd-tools-api p > tt {
+  display: inline-block;
+  max-width: 100%;
+  padding: 3px 6px;
+  background: var(--surface-secondary);
+  border-radius: 5px;
+  color: var(--brand-navy);
+  font-size: 10.5px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+body.tools .goobd-tools-api pre {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 10px 0 !important;
+  padding: 13px !important;
+  background: var(--brand-navy);
+  border: 1px solid #243e5e;
+  border-radius: 9px;
+  color: #eef3f7 !important;
+  font-size: 10.5px !important;
+  line-height: 1.55 !important;
+  text-align: left;
+  white-space: pre;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+body.tools .goobd-tools-api pre code,
+body.tools .goobd-tools-api pre tt {
+  padding: 0;
+  background: transparent !important;
+  color: inherit !important;
+}
+
+@media (max-width: 800px) {
+  body.tools .goobd-tools-api-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  body.tools .goobd-tools-api-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  body.tools main.sub_wrap.goobd-tools-page {
+    gap: 12px;
+    padding-bottom: 16px !important;
+    overflow: visible !important;
+  }
+  body.tools .goobd-tools-section {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  body.tools .goobd-tools-section > h2 {
+    font-size: 18px !important;
+  }
+  body.tools .goobd-tools-section h3 {
+    margin-top: 17px !important;
+    font-size: 13.5px !important;
+  }
+  body.tools .goobd-tools-section p,
+  body.tools .goobd-tools-section li {
+    font-size: 12px !important;
+    line-height: 1.58 !important;
+  }
+  body.tools .goobd-tools-bookmarklets > ul:first-of-type {
+    grid-template-columns: 1fr;
+  }
+  body.tools table.goobd-bookmarklet-table.tblSorter,
+  body.tools table.goobd-bookmarklet-table > tbody {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0;
+    overflow: visible;
+  }
+  body.tools table.goobd-bookmarklet-table > thead {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0,0,0,0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+  body.tools table.goobd-bookmarklet-table > tbody > tr {
+    box-sizing: border-box;
+    display: grid !important;
+    grid-template-columns: 1fr;
+    width: 100% !important;
+    margin: 0 0 10px !important;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  body.tools table.goobd-bookmarklet-table > tbody > tr:last-child {
+    margin-bottom: 0 !important;
+  }
+  body.tools table.goobd-bookmarklet-table tbody th,
+  body.tools table.goobd-bookmarklet-table tbody td {
+    display: block !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 11px 12px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #e7edf2 !important;
+  }
+  body.tools table.goobd-bookmarklet-table tbody td::before {
+    display: block;
+    margin: 0 0 6px;
+    color: var(--text-muted);
+    font-size: 9.5px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  body.tools table.goobd-bookmarklet-table tbody td:nth-of-type(1)::before {
+    content: "Standard (new page)";
+  }
+  body.tools table.goobd-bookmarklet-table tbody td:nth-of-type(2)::before {
+    content: "Instant (popup)";
+  }
+  body.tools table.goobd-bookmarklet-table tbody td:last-child {
+    border-bottom: 0 !important;
+  }
+  body.tools .goobd-tools-bookmarklet-actions {
+    align-items: stretch;
+  }
+  body.tools .goobd-tools-api-list > li {
+    padding: 12px !important;
+  }
+  body.tools .goobd-signature-reset {
+    padding: 13px;
+  }
+  body.tools .goobd-tools-api-summary {
+    padding: 13px;
+  }
+  body.tools .goobd-signature-reset-button.button {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+  }
+  body.tools .goobd-tools-api pre {
+    font-size: 10px !important;
+  }
+}
+
+body.login .goobd-login-security-notice {
+  box-sizing: border-box;
+  margin: 0 0 14px !important;
+  padding: 10px 12px;
+  background: #edf8f3;
+  border: 1px solid #b9dfcf;
+  border-radius: 8px;
+  color: var(--success) !important;
+  font-size: 12px !important;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+@media (max-width: 420px) {
+  body.tools .goobd-tools-bookmarklet-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  body.tools .goobd-tools-bookmarklet-actions a.bookmarklet,
+  body.tools table.goobd-bookmarklet-table a.bookmarklet {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
