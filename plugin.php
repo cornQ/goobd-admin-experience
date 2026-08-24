@@ -3,7 +3,7 @@
 Plugin Name: goo.bd Admin Experience
 Plugin URI: https://goo.bd/
 Description: CORNQ-aligned branding for YOURLS admin/login with a 30-day Remember Me option.
-Version: 1.24.1
+Version: 1.25.0
 Author: CORNQ
 Author URI: https://cornq.com/
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'YOURLS_ABSPATH' ) ) {
 }
 
 if ( ! defined( 'GOOBD_AE_VERSION' ) ) {
-    define( 'GOOBD_AE_VERSION', '1.24.1' );
+    define( 'GOOBD_AE_VERSION', '1.25.0' );
 }
 
 if ( ! defined( 'GOOBD_AE_REMEMBER_DAYS' ) ) {
@@ -1095,9 +1095,12 @@ function goobd_ae_head( $context = '' ) {
         field.className = 'goobd-filter-field ' + (className || '');
         var label = document.createElement('div');
         label.className = 'goobd-filter-label';
+        label.id = 'goobd-' + (className || 'filter-field') + '-label';
         label.textContent = labelText;
         var controlsWrap = document.createElement('div');
         controlsWrap.className = 'goobd-filter-controls';
+        controlsWrap.setAttribute('role','group');
+        controlsWrap.setAttribute('aria-labelledby',label.id);
         controls.forEach(function(control){ controlsWrap.appendChild(control); });
         field.appendChild(label);
         field.appendChild(controlsWrap);
@@ -1112,12 +1115,50 @@ function goobd_ae_head( $context = '' ) {
         filter.dataset.goobdFilterReady = '1';
         var buttons = options.querySelector('#filter_buttons');
 
+        var heading = document.createElement('div');
+        heading.className = 'goobd-filter-heading';
+        var title = document.createElement('h2');
+        title.id = 'goobd-filter-title';
+        title.textContent = 'Filter links';
+        var description = document.createElement('p');
+        description.textContent = 'Search, sort, or narrow the URL list.';
+        heading.appendChild(title);
+        heading.appendChild(description);
+        filter.insertBefore(heading, options);
+        filter.setAttribute('aria-labelledby',title.id);
+
         var grid = document.createElement('div');
         grid.className = 'goobd-filter-grid';
 
+        var searchInput = options.querySelector('[name="search"]');
+        var searchIn = options.querySelector('[name="search_in"]');
+        var clickLimit = options.querySelector('[name="click_limit"]');
+        var dateFirst = options.querySelector('[name="date_first"]');
+        var dateSecond = options.querySelector('[name="date_second"]');
+
+        if(searchInput){
+          searchInput.setAttribute('placeholder','Keyword, title, or URL');
+          searchInput.setAttribute('aria-label','Search links');
+        }
+        if(searchIn) searchIn.setAttribute('aria-label','Search field');
+        if(clickLimit){
+          clickLimit.setAttribute('placeholder','Count');
+          clickLimit.setAttribute('aria-label','Click count');
+        }
+        if(dateFirst){
+          dateFirst.classList.add('goobd-date-input');
+          dateFirst.setAttribute('placeholder','Select date');
+          dateFirst.setAttribute('aria-label','Created date');
+        }
+        if(dateSecond){
+          dateSecond.classList.add('goobd-date-input');
+          dateSecond.setAttribute('placeholder','End date');
+          dateSecond.setAttribute('aria-label','Created end date');
+        }
+
         makeFilterField(grid, 'Search', [
-          options.querySelector('[name="search"]'),
-          options.querySelector('[name="search_in"]')
+          searchInput,
+          searchIn
         ], 'goobd-filter-search');
         makeFilterField(grid, 'Sort', [
           options.querySelector('[name="sort_by"]'),
@@ -1128,12 +1169,12 @@ function goobd_ae_head( $context = '' ) {
         ], 'goobd-filter-rows');
         makeFilterField(grid, 'Clicks', [
           options.querySelector('[name="click_filter"]'),
-          options.querySelector('[name="click_limit"]')
+          clickLimit
         ], 'goobd-filter-clicks');
         makeFilterField(grid, 'Created', [
           options.querySelector('[name="date_filter"]'),
-          options.querySelector('[name="date_first"]'),
-          options.querySelector('[name="date_second"]')
+          dateFirst,
+          dateSecond
         ], 'goobd-filter-created');
 
         options.innerHTML = '';
