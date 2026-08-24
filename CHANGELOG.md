@@ -1,5 +1,51 @@
 # Changelog
 
+## v1.24.7
+
+### URL creator panel corners
+
+- Rounded the light-blue URL creation panel with a restrained nested-card radius.
+- Kept the desktop and mobile form layouts unchanged.
+
+## v1.24.6
+
+### Mobile filter actions
+
+- Kept the Search and Clear actions on one equal-width mobile row.
+- Replaced the separator-sensitive grid with a nowrap flex layout and neutralized legacy separator width.
+- Preserved 44px touch targets on small screens.
+
+## v1.24.5
+
+### Dropdown arrow refinement
+
+- Replaced the Filter Links and mobile Stats native select arrows with a consistent custom chevron.
+- Added right-side breathing space around the arrow without reducing label readability.
+- Switched from a down chevron to an up chevron while the native dropdown is open in browsers supporting `:open`.
+
+## v1.24.4
+
+### Mobile dropdown containment
+
+- Prevented the Filter search-field and Stats section native dropdown popups from extending past their mobile card boundaries.
+- Reserved a small mobile-only popup gutter while preserving native select behavior and desktop sizing.
+
+## v1.24.3
+
+### Responsive Stats back navigation
+
+- Added a semantic `Back to links` anchor at the start of the Stats summary card.
+- Preserved the last Dashboard search, sort, filter, and pagination URL in session storage.
+- Restricted restored URLs to the same-origin Dashboard and added a safe Dashboard fallback.
+- Added a compact desktop control and a full-width 44px mobile-browser touch target.
+
+## v1.24.2
+
+### Created-date affordance
+
+- Added a calendar icon inside the native date input beside the Created filter comparison field.
+- Preserved the original YOURLS input and date-filter behavior on desktop and mobile.
+
 ## v1.24.1
 
 ### Delete notification refinement

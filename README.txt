@@ -1,4 +1,35 @@
-goo.bd Admin Experience v1.24.1
+goo.bd Admin Experience v1.24.7
+
+URL creator panel corners:
+- Adds a restrained radius to the light-blue URL creation panel
+- Keeps the inner radius visually smaller than the surrounding white card
+- Applies consistently on desktop and mobile without changing the form layout
+
+Mobile filter actions:
+- Keeps Search and Clear on one equal-width row in the mobile Filter Links card
+- Neutralizes legacy separator content that previously pushed Clear onto a second row
+- Retains 44px touch targets at narrow mobile widths
+
+Dropdown arrow refinement:
+- Replaces inconsistent native select arrows with one restrained brand-aligned chevron
+- Adds clear space between the arrow and the right field edge on desktop and mobile
+- Shows a down arrow while closed and an up arrow while the dropdown is open in supporting browsers
+
+Mobile dropdown containment:
+- Keeps the Filter search-field dropdown and Stats section dropdown inside their mobile cards
+- Reserves space for the extra gutter used by Chromium's native option popup
+- Leaves desktop select widths and native select behavior unchanged
+
+Responsive Stats back navigation:
+- Adds a clear Back to links control at the start of every statistics page
+- Returns to the last dashboard URL with its search, sort, filter, and pagination state when available
+- Accepts only same-origin dashboard locations and falls back safely to the main Dashboard
+- Uses a compact desktop treatment and a full-width 44px mobile-browser touch target
+
+Created-date affordance:
+- Adds a restrained calendar icon inside the native date field beside the Created filter
+- Keeps the original YOURLS date input, value, and filtering behavior unchanged
+- Scopes the icon to the dashboard Filter Links section on desktop and mobile
 
 Delete notification refinement:
 - Replaces the decorative green pill and checkmark with a compact neutral system notification

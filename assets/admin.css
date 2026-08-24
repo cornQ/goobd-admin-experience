@@ -2150,6 +2150,16 @@ body.index #pagination.goobd-pagination-bottom .nav_total {
 }
 
 /* Structured URL creator produced by plugin.php. */
+body.index #new_url > div {
+  background-color: #c7e7ff !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background-clip: padding-box;
+}
+body.index #new_url_form > div,
+body.index #new_url_form .goobd-url-grid {
+  border-radius: 12px !important;
+}
 #new_url_form .goobd-url-grid {
   box-sizing: border-box;
   display: grid;
@@ -2232,6 +2242,19 @@ body:not(.login) #filter_options .goobd-filter-controls select {
   min-height: 42px !important;
   margin: 0 !important;
 }
+body.index #filter_options .goobd-filter-controls select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding-right: 44px !important;
+  background-color: var(--surface) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23182c45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 16px 16px !important;
+}
+body.index #filter_options .goobd-filter-controls select:open {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23182c45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 14 5-5 5 5'/%3E%3C/svg%3E") !important;
+}
 body:not(.login) #filter_options [name="search"] { flex: 1 1 140px; width: 100% !important; }
 body:not(.login) #filter_options [name="search_in"] { flex: 0 1 128px; }
 body:not(.login) #filter_options [name="sort_by"],
@@ -2242,6 +2265,18 @@ body:not(.login) #filter_options [name="click_limit"] { flex: 1 1 80px; width: 1
 body:not(.login) #filter_options [name="date_filter"] { flex: 0 1 120px; }
 body:not(.login) #filter_options [name="date_first"],
 body:not(.login) #filter_options [name="date_second"] { flex: 1 1 110px; width: 100% !important; }
+/* Keep the native YOURLS date field intact while making its purpose visible. */
+body.index #filter_options .goobd-filter-created [name="date_first"] {
+  padding-right: 38px !important;
+  background-color: var(--surface) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23657385' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 11px center !important;
+  background-size: 17px 17px !important;
+}
+body.index #filter_options .goobd-filter-created [name="date_first"]:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23416ab8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E") !important;
+}
 body:not(.login) #filter_buttons {
   display: flex !important;
   float: none !important;
@@ -2446,16 +2481,28 @@ body:not(.login) #filter_buttons input.button {
     min-height: 44px !important;
     margin: 0 !important;
   }
+  /* Chromium's native option popup can render wider than its select. Keep the
+   * right-side popup gutter inside the mobile filter card. */
+  body.index #filter_options .goobd-filter-search [name="search_in"] {
+    justify-self: start;
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+  }
   body:not(.login) #filter_buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
+    display: flex !important;
+    flex-flow: row nowrap !important;
+    align-items: stretch;
     gap: 8px;
     margin-top: 14px !important;
+    font-size: 0 !important;
   }
   body:not(.login) #filter_buttons input.button {
-    width: 100% !important;
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
     height: 44px !important;
     min-height: 44px !important;
+    font-size: 12px !important;
   }
   body:not(.login) #pagination {
     margin-top: 10px !important;
@@ -3165,6 +3212,39 @@ body.infos .goobd-stats-hero {
   border-radius: 14px;
   box-shadow: var(--shadow-summary);
 }
+body.infos .goobd-stats-back {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 0 0 15px;
+  padding: 7px 11px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--brand-navy) !important;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-decoration: none !important;
+}
+body.infos .goobd-stats-back:hover {
+  background: #e2e9f0;
+  border-color: #c5d0dc;
+  color: var(--brand-navy) !important;
+}
+body.infos .goobd-stats-back:focus-visible {
+  outline: 3px solid var(--brand-yellow);
+  outline-offset: 2px;
+}
+body.infos .goobd-stats-back-icon {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
 body.infos #informations {
   margin: 0 0 16px !important;
   color: var(--brand-navy) !important;
@@ -3637,6 +3717,13 @@ body.infos #stat_tab_share #share_links a {
     padding: 15px;
     border-radius: 12px;
   }
+  body.infos .goobd-stats-back {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    margin-bottom: 14px;
+    padding: 10px 14px;
+  }
   body.infos #informations {
     margin-bottom: 13px !important;
     font-size: 18px !important;
@@ -3680,17 +3767,27 @@ body.infos #stat_tab_share #share_links a {
   body.infos #goobd-stats-section {
     box-sizing: border-box;
     display: block;
-    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    width: calc(100% - 18px);
+    max-width: calc(100% - 18px);
     height: 44px;
     margin: 0;
-    padding: 0 38px 0 12px;
+    padding: 0 44px 0 12px;
     background-color: var(--surface-secondary);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23182c45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px 16px;
     border: 1px solid #cfd8e2;
     border-radius: 9px;
     color: var(--brand-navy);
     font-family: var(--font-sans);
     font-size: 12.5px;
     font-weight: 750;
+  }
+  body.infos #goobd-stats-section:open {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23182c45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 14 5-5 5 5'/%3E%3C/svg%3E");
   }
   body.infos #goobd-stats-section:focus {
     outline: 0;

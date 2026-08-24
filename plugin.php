@@ -3,7 +3,7 @@
 Plugin Name: goo.bd Admin Experience
 Plugin URI: https://goo.bd/
 Description: CORNQ-aligned branding for YOURLS admin/login with a 30-day Remember Me option.
-Version: 1.24.1
+Version: 1.24.7
 Author: CORNQ
 Author URI: https://cornq.com/
 */
@@ -13,7 +13,7 @@ if ( ! defined( 'YOURLS_ABSPATH' ) ) {
 }
 
 if ( ! defined( 'GOOBD_AE_VERSION' ) ) {
-    define( 'GOOBD_AE_VERSION', '1.24.1' );
+    define( 'GOOBD_AE_VERSION', '1.24.7' );
 }
 
 if ( ! defined( 'GOOBD_AE_REMEMBER_DAYS' ) ) {
@@ -650,6 +650,38 @@ function goobd_ae_head( $context = '' ) {
         }
       }
 
+      function rememberDashboardLocation(){
+        if(!document.body.classList.contains('index') || document.body.classList.contains('infos')) return;
+        try {
+          window.sessionStorage.setItem('goobdLastDashboardUrl', window.location.href);
+        } catch(e) {}
+      }
+
+      function getStatsBackUrl(){
+        var fallback = new URL(<?php echo json_encode( yourls_admin_url( 'index.php' ) ); ?>, window.location.href);
+        fallback.search = '';
+        fallback.hash = '';
+        var candidates = [];
+
+        try {
+          candidates.push(window.sessionStorage.getItem('goobdLastDashboardUrl'));
+        } catch(e) {}
+        candidates.push(document.referrer);
+
+        for(var i = 0; i < candidates.length; i++){
+          if(!candidates[i]) continue;
+          try {
+            var candidate = new URL(candidates[i], window.location.href);
+            var isDashboard = candidate.origin === window.location.origin
+              && candidate.pathname === fallback.pathname
+              && !candidate.searchParams.has('id');
+            if(isDashboard) return candidate.href;
+          } catch(e) {}
+        }
+
+        return fallback.href;
+      }
+
       function enhanceStatsPage(){
         if(!document.body.classList.contains('infos')) return;
         var title = document.getElementById('informations');
@@ -663,6 +695,20 @@ function goobd_ae_head( $context = '' ) {
         hero.className = 'goobd-stats-hero';
         hero.setAttribute('aria-labelledby','informations');
         title.parentNode.insertBefore(hero, title);
+
+        var backLink = document.createElement('a');
+        backLink.className = 'goobd-stats-back';
+        backLink.href = getStatsBackUrl();
+        backLink.setAttribute('aria-label','Back to URL list');
+        var backIcon = document.createElement('span');
+        backIcon.className = 'goobd-stats-back-icon';
+        backIcon.setAttribute('aria-hidden','true');
+        backIcon.textContent = '\u2190';
+        var backText = document.createElement('span');
+        backText.textContent = 'Back to links';
+        backLink.appendChild(backIcon);
+        backLink.appendChild(backText);
+        hero.appendChild(backLink);
         hero.appendChild(title);
 
         if(shortRow && shortRow.tagName === 'H3'){
@@ -1205,6 +1251,7 @@ function goobd_ae_head( $context = '' ) {
 
       document.addEventListener('DOMContentLoaded', function(){
         enhanceAdminMenu();
+        rememberDashboardLocation();
         enhanceDashboardSummary();
         enhanceStatsPage();
         enhanceToolsPage();
