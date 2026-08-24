@@ -2194,36 +2194,6 @@ body.index #pagination.goobd-pagination-bottom .nav_total {
 body:not(.login) #filter_form {
   line-height: 1.4 !important;
 }
-body.index #filter_form[data-goobd-filter-ready="1"]::before {
-  display: none !important;
-  content: none !important;
-}
-body.index #filter_form .goobd-filter-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 0 0 16px;
-  padding: 0 0 12px;
-  border-bottom: 1px solid var(--border);
-}
-body.index #filter_form .goobd-filter-heading h2 {
-  margin: 0;
-  color: var(--brand-navy);
-  font-family: var(--font-sans);
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.3;
-}
-body.index #filter_form .goobd-filter-heading p {
-  margin: 0;
-  color: var(--text-muted);
-  font-family: var(--font-sans);
-  font-size: 11.5px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: right;
-}
 body:not(.login) #filter_options {
   width: 100%;
 }
@@ -2271,21 +2241,7 @@ body:not(.login) #filter_options [name="click_filter"] { flex: 0 1 110px; }
 body:not(.login) #filter_options [name="click_limit"] { flex: 1 1 80px; width: 100% !important; }
 body:not(.login) #filter_options [name="date_filter"] { flex: 0 1 120px; }
 body:not(.login) #filter_options [name="date_first"],
-body:not(.login) #filter_options [name="date_second"] {
-  flex: 1 1 110px;
-  width: 100% !important;
-}
-body.index #filter_options input.goobd-date-input {
-  padding-right: 38px !important;
-  background-color: var(--surface) !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23657385' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat !important;
-  background-position: right 11px center !important;
-  background-size: 17px 17px !important;
-}
-body.index #filter_options input.goobd-date-input:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23416ab8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M16 3v4M8 3v4M3 10h18'/%3E%3C/svg%3E") !important;
-}
+body:not(.login) #filter_options [name="date_second"] { flex: 1 1 110px; width: 100% !important; }
 body:not(.login) #filter_buttons {
   display: flex !important;
   float: none !important;
@@ -2446,16 +2402,6 @@ body:not(.login) #filter_buttons input.button {
     border-radius: 14px !important;
     box-shadow: 0 5px 14px rgba(24,44,69,.035) !important;
   }
-  body.index #filter_form .goobd-filter-heading {
-    display: block;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-  }
-  body.index #filter_form .goobd-filter-heading p {
-    margin-top: 3px;
-    font-size: 11px;
-    text-align: left;
-  }
   body.index #filter_form.goobd-filter-above-table {
     margin: 14px 0 0 !important;
     padding: 16px !important;
@@ -2525,13 +2471,6 @@ body:not(.login) #filter_buttons input.button {
   body:not(.login) #filter_options .goobd-filter-search,
   body:not(.login) #filter_options .goobd-filter-sort,
   body:not(.login) #filter_options .goobd-filter-created {
-    grid-column: 1 !important;
-  }
-  body:not(.login) #filter_options .goobd-filter-sort .goobd-filter-controls,
-  body:not(.login) #filter_options .goobd-filter-created .goobd-filter-controls {
-    grid-template-columns: 1fr !important;
-  }
-  body:not(.login) #filter_options .goobd-filter-created [name="date_second"] {
     grid-column: 1 !important;
   }
 }

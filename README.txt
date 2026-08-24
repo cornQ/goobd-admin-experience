@@ -1,11 +1,4 @@
-goo.bd Admin Experience v1.25.0
-
-Filter Links refinement:
-- Adds a clear heading and concise explanation without replacing the native YOURLS form
-- Adds meaningful placeholders and accessible labels to search, click-count, and date controls
-- Gives the Created date fields a restrained calendar indicator while preserving native date filtering
-- Keeps the balanced desktop grid and uses a cleaner single-column layout on narrow mobile screens
-- Scopes all changes to the dashboard filter so the URL table and other admin pages remain unchanged
+goo.bd Admin Experience v1.24.1
 
 Delete notification refinement:
 - Replaces the decorative green pill and checkmark with a compact neutral system notification

@@ -1,14 +1,5 @@
 # Changelog
 
-## v1.25.0
-
-### Filter Links refinement
-
-- Replaced the generated pseudo-heading with a semantic filter heading and concise supporting text.
-- Added useful placeholders and accessible group labels without replacing any native YOURLS controls.
-- Added a restrained calendar indicator to the existing Created date inputs while preserving their names, values, and date-filter behavior.
-- Refined the desktop hierarchy and narrow-mobile stacking without changing the URL table.
-
 ## v1.24.1
 
 ### Delete notification refinement
