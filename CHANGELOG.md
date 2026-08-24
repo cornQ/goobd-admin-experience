@@ -1,5 +1,86 @@
 # Changelog
 
+## v1.25.5
+
+### Login viewport containment
+
+- Gave the desktop login flex layout a definite dynamic viewport height instead of relying on an indefinite minimum height.
+- Cleared the legacy YOURLS body top padding that otherwise extended the document beyond the viewport.
+- Kept the body-level header, flexible login wrapper, and footer within one viewport when the complete content fits.
+- Added a short-height fallback that restores natural document flow for extra fields, mobile keyboards, and viewports below 721px.
+
+## v1.25.4
+
+### Login viewport-height fix
+
+- Removed the unnecessary vertical scrollbar when the complete login layout fits in the viewport.
+- Allowed the login wrapper and main content area to shrink within the available flex height.
+- Removed the shared desktop footer top margin on login pages only.
+- Preserved natural scrolling when extra login fields, notices, mobile keyboards, or short viewports genuinely require it.
+
+## v1.25.3
+
+### Shared-layout overflow fix
+
+- Removed the unnecessary page-level horizontal scrollbar from login and admin pages.
+- Relocated the shared header from the constrained YOURLS wrapper into the body flex layout.
+- Replaced the scrollbar-sensitive `100vw` header width with `100%` of the available page width.
+- Kept statistics and sharing overflow handling scoped to their existing internal containers.
+
+## v1.25.2
+
+### Plugin identity consistency
+
+- Renamed the public plugin to `goo.bd Admin Experience for YOURLS`.
+- Aligned the gettext text domain with the `goobd-admin-experience` plugin directory and settings-page slug.
+- Updated locale filename documentation, debug-log identifiers, README installation steps, and release metadata.
+- Kept CORNQ as the plugin author and default branding attribution.
+
+## v1.25.1
+
+### Settings reliability
+
+- Verifies branding settings with a database read-back before showing a save or reset success notice.
+- Shows a clear error notice when the desired settings were not persisted.
+- Allows intentionally empty header tagline and footer content while keeping Site name and Header identity required.
+
+### Safe configurable output
+
+- Balances allowed inline HTML tags before rendering malformed user input.
+- Adds regression cases for unsafe protocols, event attributes, nested tags, link protection, and empty optional content.
+- Lets long custom header and tagline content wrap without widening the desktop or mobile viewport.
+- Aligns the saved preview with the wrapping behavior of the live header.
+
+### Public release quality
+
+- Localizes the branding settings interface and loads optional locale files from `languages/`.
+- Adds structured requirements, clean-install, configuration, translation, update, and deactivation documentation.
+- Adds the MIT license for public reuse.
+
+## v1.25.0
+
+### Configurable branding settings
+
+- Registered `Admin Experience Settings` as a native YOURLS plugin page under Manage Plugins.
+- Added responsive Site name, Header identity HTML, Header tagline HTML, and Footer HTML controls.
+- Added nonce-protected save/reset handling through the native pre-render plugin-page load action.
+- Stored one versioned settings array through the YOURLS Options API.
+- Added safe inline HTML allowlists, field-size limits, dangerous-block removal, and protected `_blank` footer links.
+- Kept HTML sanitization compatible with the project's YOURLS 1.10.4 baseline without relying on helpers introduced in 1.10.5.
+- Added dynamic `{year}`, `{site_url}`, and `{admin_url}` placeholders.
+- Added a sanitized saved preview, success notices, and backward-compatible reset defaults.
+
+### Branding integration
+
+- Applied configured branding to the shared header, tagline, footer, page titles, application metadata, and ARIA labels.
+- Preserved the existing `goo.bd by CORNQ` identity when no settings have been saved.
+
+### Public-release foundation
+
+- Added public-facing plugin metadata for the YOURLS Admin Experience package.
+- Added the GitHub plugin URI and text-domain metadata.
+- Retained established internal prefixes and option naming for upgrade compatibility.
+
 ## v1.24.7
 
 ### URL creator panel corners

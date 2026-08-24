@@ -1,4 +1,116 @@
-goo.bd Admin Experience v1.24.7
+goo.bd Admin Experience for YOURLS
+
+Current version: 1.25.5
+
+Overview
+--------
+
+A configurable, responsive admin and login experience for YOURLS. It keeps native YOURLS behavior intact while adding mobile-friendly link management, statistics and tools layouts, optional Remember Me support, and safe branding controls.
+
+Requirements
+------------
+
+- YOURLS 1.10.4 or newer
+- PHP 8.1 or newer, matching the YOURLS 1.10.4 requirement
+- A private YOURLS admin installation is strongly recommended
+
+Clean installation
+------------------
+
+1. Copy this repository directory to `user/plugins/goobd-admin-experience/` inside YOURLS.
+2. Sign in to YOURLS and open Manage Plugins.
+3. Activate `goo.bd Admin Experience for YOURLS`.
+4. Open Manage Plugins > Admin Experience Settings to configure the branding.
+5. Hard-refresh the browser after an update so the versioned stylesheet is reloaded.
+
+Branding configuration
+----------------------
+
+- Site name is plain text and is required.
+- Header identity supports safe inline HTML and is required.
+- Header tagline supports safe inline HTML and may be left empty.
+- Footer supports safe inline HTML and safe links, and may be left empty.
+- Available placeholders are `{year}`, `{site_url}`, and `{admin_url}`.
+- Reset defaults restores the original `goo.bd by CORNQ` identity.
+
+HTML security
+-------------
+
+Allowed header and tagline tags are `span`, `strong`, `em`, `small`, and `br`. The footer additionally supports `a` with restricted attributes and safe protocols. Event handlers, inline styles, embedded content, forms, and unsafe link protocols are removed. Allowed tags are balanced before rendering.
+
+Translations
+------------
+
+The branding settings interface uses the `goobd-admin-experience` text domain. Place compiled translations in `languages/` using the filename `goobd-admin-experience-LOCALE.mo`, for example `goobd-admin-experience-bn_BD.mo`.
+
+Updates and deactivation
+------------------------
+
+Back up the current plugin directory before updating, replace the plugin files, and hard-refresh the browser. Deactivating the plugin leaves saved branding settings in the YOURLS options table so a later reactivation restores them.
+
+License
+-------
+
+Released under the MIT License. See `LICENSE`.
+
+Release notes
+-------------
+
+v1.25.5 login viewport containment:
+- Gives the desktop login flex layout a definite dynamic viewport height
+- Clears the legacy YOURLS body top padding that extended the document beyond that viewport height
+- Keeps the header, flexible login area, and footer inside one screen when their content fits
+- Restores auto-height document flow below 721px viewport height for extra fields, short screens, and mobile keyboards
+
+v1.25.4 login viewport-height fix:
+- Removes the unnecessary vertical scrollbar when the login content fits in the viewport
+- Allows the login wrapper and main area to shrink within the available flex height
+- Removes the generic desktop footer top margin on login pages only
+- Preserves natural vertical scrolling on short-height and mobile screens when content genuinely overflows
+
+v1.25.3 shared-layout overflow fix:
+- Removes the unnecessary page-level horizontal scrollbar on login and admin pages
+- Relocates the shared header to the body layout and sizes it against the available width instead of `100vw`
+- Preserves scoped horizontal scrolling inside native statistics components
+
+v1.25.2 plugin identity consistency:
+- Renames the public plugin to goo.bd Admin Experience for YOURLS
+- Aligns the gettext text domain and locale filenames with the `goobd-admin-experience` plugin slug
+- Keeps CORNQ as the author and default brand attribution
+
+v1.25.1 quality and public-release fixes:
+- Verifies saved branding through a database read-back before showing success
+- Shows an error notice when branding settings cannot be persisted
+- Allows intentionally empty tagline and footer content
+- Balances malformed allowed HTML tags before rendering
+- Prevents long custom header and tagline content from widening the viewport
+- Adds translation loading and localizes the branding settings interface
+- Adds sanitizer regression coverage, public installation documentation, and an MIT license
+
+v1.25.0 configurable branding settings:
+
+Configurable branding settings:
+- Registers Admin Experience Settings as a native sub-page under Manage Plugins
+- Adds responsive controls for Site name, Header identity HTML, Header tagline HTML, and Footer HTML
+- Uses YOURLS options storage with the existing goo.bd by CORNQ identity as a backward-compatible default
+- Applies the configured site name to browser titles, application metadata, and accessibility labels
+- Supports {year}, {site_url}, and {admin_url} placeholders in branding HTML
+- Uses nonce-protected POST handling followed by a clean redirect after save or reset
+- Includes a sanitized saved preview and a Reset defaults action
+
+Safe HTML support:
+- Allows span, strong, em, small, and br in header/tagline fields
+- Allows the same inline tags plus safe links in the footer field
+- Removes scripts, embedded content, forms, inline event handlers, styles, and unsafe link protocols
+- Automatically adds noopener noreferrer protection to footer links opening in a new tab
+- Limits field sizes and sanitizes again when settings are read
+- Uses a plugin-owned compatibility sanitizer so the feature works on the project's YOURLS 1.10.4 baseline
+
+Public-release foundation:
+- Uses a public-facing YOURLS Admin Experience plugin name
+- Links plugin metadata to the GitHub repository and declares a text domain
+- Keeps the established goobd_ae internal prefixes and option key for upgrade compatibility
+- Leaves installations without saved settings visually unchanged
 
 URL creator panel corners:
 - Adds a restrained radius to the light-blue URL creation panel
@@ -200,5 +312,3 @@ Mobile refinements:
 - Filter controls are reorganized into responsive labeled fields
 - Search/Clear and pagination are mobile-friendly
 - Keeps responsive card table, branding, Remember Me, analytics/share compatibility fixes
-
-Install by replacing the existing goobd-admin-experience plugin folder, then hard refresh the browser.

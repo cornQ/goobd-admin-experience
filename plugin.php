@@ -1,11 +1,14 @@
 <?php
 /*
-Plugin Name: goo.bd Admin Experience
-Plugin URI: https://goo.bd/
-Description: CORNQ-aligned branding for YOURLS admin/login with a 30-day Remember Me option.
-Version: 1.24.7
+Plugin Name: goo.bd Admin Experience for YOURLS
+Plugin URI: https://github.com/cornQ/goobd-yourls-theme
+Description: A configurable, responsive YOURLS admin and login experience with safe HTML branding controls.
+Version: 1.25.5
 Author: CORNQ
 Author URI: https://cornq.com/
+Text Domain: goobd-admin-experience
+License: MIT
+License URI: https://opensource.org/license/mit
 */
 
 if ( ! defined( 'YOURLS_ABSPATH' ) ) {
@@ -13,11 +16,473 @@ if ( ! defined( 'YOURLS_ABSPATH' ) ) {
 }
 
 if ( ! defined( 'GOOBD_AE_VERSION' ) ) {
-    define( 'GOOBD_AE_VERSION', '1.24.7' );
+    define( 'GOOBD_AE_VERSION', '1.25.5' );
 }
 
 if ( ! defined( 'GOOBD_AE_REMEMBER_DAYS' ) ) {
     define( 'GOOBD_AE_REMEMBER_DAYS', 30 );
+}
+
+if ( ! defined( 'GOOBD_AE_SETTINGS_OPTION' ) ) {
+    define( 'GOOBD_AE_SETTINGS_OPTION', 'goobd_ae_settings' );
+}
+
+if ( ! defined( 'GOOBD_AE_SETTINGS_PAGE' ) ) {
+    define( 'GOOBD_AE_SETTINGS_PAGE', 'goobd-admin-experience' );
+}
+
+if ( ! defined( 'GOOBD_AE_TEXT_DOMAIN' ) ) {
+    define( 'GOOBD_AE_TEXT_DOMAIN', 'goobd-admin-experience' );
+}
+
+/** Load an optional locale file without warning when no translation is bundled. */
+yourls_add_action( 'plugins_loaded', 'goobd_ae_load_textdomain', 5 );
+function goobd_ae_load_textdomain() {
+    $locale = yourls_get_locale();
+    if ( ! is_string( $locale ) || $locale === '' ) {
+        return;
+    }
+
+    $mofile = dirname( __FILE__ ) . '/languages/' . GOOBD_AE_TEXT_DOMAIN . '-' . $locale . '.mo';
+    if ( is_readable( $mofile ) ) {
+        yourls_load_textdomain( GOOBD_AE_TEXT_DOMAIN, $mofile );
+    }
+}
+
+/**
+ * Current defaults preserve the existing goo.bd installation when the plugin
+ * is upgraded without saved settings.
+ */
+function goobd_ae_default_settings() {
+    return array(
+        'schema_version' => 1,
+        'site_name'      => 'goo.bd',
+        'header_html'    => '<span class="goobd-product-name">goo.bd</span> <span class="goobd-brand-attribution">by CORNQ</span>',
+        'tagline_html'   => 'Short links. Made simple.',
+        'footer_html'    => '&copy; {year} goo.bd powered by <a href="https://cornq.com/" target="_blank" rel="noopener noreferrer"><strong>CORNQ</strong></a>',
+    );
+}
+
+/** Limit public settings to a practical size before parsing or storing them. */
+function goobd_ae_limit_setting_string( $value, $limit ) {
+    if ( ! is_string( $value ) ) {
+        return '';
+    }
+
+    if ( function_exists( 'mb_substr' ) ) {
+        return mb_substr( $value, 0, $limit, 'UTF-8' );
+    }
+
+    return substr( $value, 0, $limit );
+}
+
+/** Sanitize the plain-text product name used by titles, metadata, and labels. */
+function goobd_ae_sanitize_site_name( $value ) {
+    $value = goobd_ae_limit_setting_string( $value, 120 );
+    $value = trim( strip_tags( $value ) );
+    $value = preg_replace( '/[\x00-\x1F\x7F]/u', '', $value );
+
+    return is_string( $value ) ? trim( $value ) : '';
+}
+
+/** Allow safe footer destinations while keeping theme placeholders intact. */
+function goobd_ae_sanitize_brand_href( $href ) {
+    $href = goobd_ae_limit_setting_string( html_entity_decode( (string) $href, ENT_QUOTES | ENT_HTML5, 'UTF-8' ), 2000 );
+    $href = preg_replace( '/[\x00-\x1F\x7F]/u', '', trim( $href ) );
+    if ( ! is_string( $href ) || $href === '' || strpos( $href, '//' ) === 0 ) {
+        return '';
+    }
+
+    if ( preg_match( '/^[a-z][a-z0-9+.-]*:/i', $href, $matches ) ) {
+        $scheme = strtolower( $matches[0] );
+        if ( ! in_array( $scheme, array( 'http:', 'https:', 'mailto:' ), true ) ) {
+            return '';
+        }
+    }
+
+    if (
+        strpos( $href, '{' ) !== false
+        && ! preg_match( '/^\{(?:site_url|admin_url)\}(?:[\/#?].*)?$/', $href )
+    ) {
+        return '';
+    }
+
+    return $href;
+}
+
+/** Rebuild one allowed inline tag without carrying through arbitrary attributes. */
+function goobd_ae_sanitize_brand_tag( $tag, $context ) {
+    if ( ! preg_match( '/^<\s*(\/?)\s*([a-z0-9]+)\b([^>]*)>$/is', $tag, $parts ) ) {
+        return '';
+    }
+
+    $closing = $parts[1] === '/';
+    $name    = strtolower( $parts[2] );
+    $allowed_names = array( 'span', 'strong', 'em', 'small', 'br' );
+    if ( $context === 'footer' ) {
+        $allowed_names[] = 'a';
+    }
+    if ( ! in_array( $name, $allowed_names, true ) ) {
+        return '';
+    }
+    if ( $name === 'br' ) {
+        return $closing ? '' : '<br>';
+    }
+    if ( $closing ) {
+        return '</' . $name . '>';
+    }
+
+    $attributes = array();
+    preg_match_all(
+        '/([a-z_:][a-z0-9_:.-]*)\s*(?:=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s"\'=<>`]+)))?/i',
+        $parts[3],
+        $attribute_matches,
+        PREG_SET_ORDER
+    );
+
+    foreach ( $attribute_matches as $attribute ) {
+        $attribute_name = strtolower( $attribute[1] );
+        $attribute_value = isset( $attribute[2] ) && $attribute[2] !== ''
+            ? $attribute[2]
+            : ( isset( $attribute[3] ) && $attribute[3] !== ''
+                ? $attribute[3]
+                : ( isset( $attribute[4] ) ? $attribute[4] : '' ) );
+
+        if ( $attribute_name === 'class' ) {
+            $class = preg_replace( '/[^a-z0-9_\-\s]/i', '', $attribute_value );
+            $class = is_string( $class ) ? trim( preg_replace( '/\s+/', ' ', $class ) ) : '';
+            if ( $class !== '' ) {
+                $attributes['class'] = $class;
+            }
+            continue;
+        }
+
+        if ( $name !== 'a' ) {
+            continue;
+        }
+        if ( $attribute_name === 'href' ) {
+            $href = goobd_ae_sanitize_brand_href( $attribute_value );
+            if ( $href !== '' ) {
+                $attributes['href'] = $href;
+            }
+        } elseif ( $attribute_name === 'title' ) {
+            $attributes['title'] = goobd_ae_limit_setting_string( $attribute_value, 300 );
+        } elseif ( $attribute_name === 'target' && in_array( $attribute_value, array( '_blank', '_self' ), true ) ) {
+            $attributes['target'] = $attribute_value;
+        } elseif ( $attribute_name === 'rel' ) {
+            $rel_tokens = preg_split( '/\s+/', strtolower( trim( $attribute_value ) ) );
+            $rel_tokens = array_intersect( (array) $rel_tokens, array( 'noopener', 'noreferrer', 'nofollow', 'ugc', 'sponsored' ) );
+            if ( $rel_tokens ) {
+                $attributes['rel'] = implode( ' ', array_unique( $rel_tokens ) );
+            }
+        }
+    }
+
+    if ( $name === 'a' && isset( $attributes['target'] ) && $attributes['target'] === '_blank' ) {
+        $rel_tokens = isset( $attributes['rel'] ) ? preg_split( '/\s+/', $attributes['rel'] ) : array();
+        $rel_tokens = array_unique( array_merge( (array) $rel_tokens, array( 'noopener', 'noreferrer' ) ) );
+        $attributes['rel'] = implode( ' ', $rel_tokens );
+    }
+
+    $html = '<' . $name;
+    foreach ( $attributes as $attribute_name => $attribute_value ) {
+        $html .= ' ' . $attribute_name . '="' . yourls_esc_attr( $attribute_value ) . '"';
+    }
+    return $html . '>';
+}
+
+/**
+ * Sanitize configurable inline HTML with a deliberately small allowlist.
+ * Header content cannot contain links because it is rendered inside the fixed
+ * Dashboard anchor. Footer content may contain safe links.
+ */
+function goobd_ae_sanitize_brand_html( $html, $context = 'header' ) {
+    $html = goobd_ae_limit_setting_string( $html, 5000 );
+    $without_dangerous_blocks = preg_replace(
+        '#<(script|style|iframe|object|embed|form)[^>]*>.*?</\1\s*>#is',
+        '',
+        $html
+    );
+    if ( is_string( $without_dangerous_blocks ) ) {
+        $html = $without_dangerous_blocks;
+    }
+
+    $allowed_tags = '<span><strong><em><small><br>';
+
+    if ( $context === 'footer' ) {
+        $allowed_tags .= '<a>';
+    }
+
+    $html = strip_tags( $html, $allowed_tags );
+    $tokens = preg_split(
+        '/(<\/?(?:span|strong|em|small|br|a)\b[^>]*>)/i',
+        $html,
+        -1,
+        PREG_SPLIT_DELIM_CAPTURE
+    );
+    if ( ! is_array( $tokens ) ) {
+        return '';
+    }
+
+    $html = '';
+    $open_tags = array();
+    foreach ( $tokens as $token ) {
+        if ( $token === '' ) {
+            continue;
+        }
+        if ( $token[0] === '<' ) {
+            if ( ! preg_match( '/^<\s*(\/?)\s*([a-z0-9]+)\b/i', $token, $tag_parts ) ) {
+                continue;
+            }
+
+            $tag_name = strtolower( $tag_parts[2] );
+            $is_closing = $tag_parts[1] === '/';
+            if ( $is_closing ) {
+                if ( $open_tags && end( $open_tags ) === $tag_name ) {
+                    array_pop( $open_tags );
+                    $html .= '</' . $tag_name . '>';
+                }
+                continue;
+            }
+
+            $sanitized_tag = goobd_ae_sanitize_brand_tag( $token, $context );
+            if ( $sanitized_tag === '' ) {
+                continue;
+            }
+            $html .= $sanitized_tag;
+            if ( $tag_name !== 'br' ) {
+                $open_tags[] = $tag_name;
+            }
+        } else {
+            $html .= yourls_esc_html( $token );
+        }
+    }
+
+    while ( $open_tags ) {
+        $html .= '</' . array_pop( $open_tags ) . '>';
+    }
+
+    return trim( $html );
+}
+
+/** Read and normalize the complete settings object with safe defaults. */
+function goobd_ae_get_settings() {
+    static $settings = null;
+
+    if ( is_array( $settings ) ) {
+        return $settings;
+    }
+
+    $defaults = goobd_ae_default_settings();
+    $stored   = yourls_get_option( GOOBD_AE_SETTINGS_OPTION, array() );
+    if ( ! is_array( $stored ) ) {
+        $stored = array();
+    }
+
+    $settings = array_merge( $defaults, array_intersect_key( $stored, $defaults ) );
+    $settings['schema_version'] = 1;
+    $settings['site_name'] = goobd_ae_sanitize_site_name( $settings['site_name'] );
+    if ( $settings['site_name'] === '' ) {
+        $settings['site_name'] = $defaults['site_name'];
+    }
+
+    $settings['header_html'] = goobd_ae_sanitize_brand_html( $settings['header_html'], 'header' );
+    $settings['tagline_html'] = goobd_ae_sanitize_brand_html( $settings['tagline_html'], 'header' );
+    $settings['footer_html'] = goobd_ae_sanitize_brand_html( $settings['footer_html'], 'footer' );
+
+    if ( $settings['header_html'] === '' ) {
+        $settings['header_html'] = goobd_ae_sanitize_brand_html( $defaults['header_html'], 'header' );
+    }
+
+    return $settings;
+}
+
+/** Persist settings and verify the stored value, including no-op updates. */
+function goobd_ae_store_settings( $settings ) {
+    if ( ! is_array( $settings ) ) {
+        return false;
+    }
+
+    try {
+        yourls_update_option( GOOBD_AE_SETTINGS_OPTION, $settings );
+        $stored = yourls_get_option( GOOBD_AE_SETTINGS_OPTION, null );
+    } catch ( Throwable $exception ) {
+        yourls_debug_log( 'goo.bd Admin Experience could not persist branding settings.' );
+        return false;
+    }
+
+    return is_array( $stored ) && $stored === $settings;
+}
+
+/** Replace safe dynamic placeholders immediately before rendering. */
+function goobd_ae_expand_brand_tokens( $html ) {
+    return strtr(
+        $html,
+        array(
+            '{year}'      => date( 'Y' ),
+            '{site_url}'  => yourls_esc_url( yourls_site_url( false ) ),
+            '{admin_url}' => yourls_esc_url( yourls_admin_url( 'index.php' ) ),
+        )
+    );
+}
+
+/** Return the canonical URL for the registered settings page. */
+function goobd_ae_settings_page_url() {
+    return yourls_admin_url( 'plugins.php?page=' . GOOBD_AE_SETTINGS_PAGE );
+}
+
+/** Register the native YOURLS plugin page and its pre-render load handler. */
+yourls_add_action( 'plugins_loaded', 'goobd_ae_register_settings_page' );
+function goobd_ae_register_settings_page() {
+    yourls_register_plugin_page(
+        GOOBD_AE_SETTINGS_PAGE,
+        yourls__( 'Admin Experience Settings', GOOBD_AE_TEXT_DOMAIN ),
+        'goobd_ae_render_settings_page'
+    );
+    yourls_add_action(
+        'load-' . GOOBD_AE_SETTINGS_PAGE,
+        'goobd_ae_handle_settings_submission'
+    );
+}
+
+/** Save or reset settings before YOURLS sends the plugin-page HTML header. */
+function goobd_ae_handle_settings_submission() {
+    if (
+        empty( $_SERVER['REQUEST_METHOD'] )
+        || strtoupper( (string) $_SERVER['REQUEST_METHOD'] ) !== 'POST'
+    ) {
+        return;
+    }
+
+    if ( ! defined( 'YOURLS_USER' ) ) {
+        yourls_die(
+            yourls__( 'You must be signed in to update these settings.', GOOBD_AE_TEXT_DOMAIN ),
+            yourls__( 'Unauthorized', GOOBD_AE_TEXT_DOMAIN ),
+            403
+        );
+    }
+
+    $nonce = isset( $_POST['goobd_ae_settings_nonce'] ) && is_string( $_POST['goobd_ae_settings_nonce'] )
+        ? $_POST['goobd_ae_settings_nonce']
+        : '';
+    yourls_verify_nonce( 'goobd_ae_save_settings', $nonce );
+
+    $action = isset( $_POST['goobd_ae_settings_action'] ) && is_string( $_POST['goobd_ae_settings_action'] )
+        ? $_POST['goobd_ae_settings_action']
+        : 'save';
+
+    if ( $action === 'reset' ) {
+        $settings = goobd_ae_default_settings();
+        $status = goobd_ae_store_settings( $settings ) ? 'reset' : 'reset-error';
+    } else {
+        $defaults = goobd_ae_default_settings();
+        $settings = array(
+            'schema_version' => 1,
+            'site_name'      => goobd_ae_sanitize_site_name( isset( $_POST['goobd_ae_site_name'] ) ? $_POST['goobd_ae_site_name'] : '' ),
+            'header_html'    => goobd_ae_sanitize_brand_html( isset( $_POST['goobd_ae_header_html'] ) ? $_POST['goobd_ae_header_html'] : '', 'header' ),
+            'tagline_html'   => goobd_ae_sanitize_brand_html( isset( $_POST['goobd_ae_tagline_html'] ) ? $_POST['goobd_ae_tagline_html'] : '', 'header' ),
+            'footer_html'    => goobd_ae_sanitize_brand_html( isset( $_POST['goobd_ae_footer_html'] ) ? $_POST['goobd_ae_footer_html'] : '', 'footer' ),
+        );
+
+        foreach ( array( 'site_name', 'header_html' ) as $key ) {
+            if ( $settings[ $key ] === '' ) {
+                $settings[ $key ] = $defaults[ $key ];
+            }
+        }
+
+        $status = goobd_ae_store_settings( $settings ) ? 'saved' : 'save-error';
+    }
+
+    $redirect = yourls_add_query_arg(
+        array( 'goobd_ae_settings_status' => $status ),
+        goobd_ae_settings_page_url()
+    );
+    yourls_redirect( $redirect );
+    exit;
+}
+
+/** Draw the registered, responsive branding settings page. */
+function goobd_ae_render_settings_page() {
+    $settings = goobd_ae_get_settings();
+    $status = isset( $_GET['goobd_ae_settings_status'] ) && is_string( $_GET['goobd_ae_settings_status'] )
+        ? $_GET['goobd_ae_settings_status']
+        : '';
+    ?>
+    <main class="goobd-settings-page" role="main">
+        <header class="goobd-settings-intro">
+            <p class="goobd-settings-kicker"><?php echo yourls_esc_html__( 'Admin Experience', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+            <h2><?php echo yourls_esc_html__( 'Branding settings', GOOBD_AE_TEXT_DOMAIN ); ?></h2>
+            <p><?php echo yourls_esc_html__( 'Customize the product identity shown across the YOURLS admin and login experience. Saved HTML is restricted to a safe inline allowlist.', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+        </header>
+
+        <?php if ( $status === 'saved' ) { ?>
+            <div class="goobd-settings-notice goobd-settings-notice-success" role="status"><?php echo yourls_esc_html__( 'Branding settings saved.', GOOBD_AE_TEXT_DOMAIN ); ?></div>
+        <?php } elseif ( $status === 'reset' ) { ?>
+            <div class="goobd-settings-notice goobd-settings-notice-success" role="status"><?php echo yourls_esc_html__( 'Branding settings reset to defaults.', GOOBD_AE_TEXT_DOMAIN ); ?></div>
+        <?php } elseif ( $status === 'save-error' ) { ?>
+            <div class="goobd-settings-notice goobd-settings-notice-error" role="alert"><?php echo yourls_esc_html__( 'Branding settings could not be saved. Please try again and check the YOURLS database connection.', GOOBD_AE_TEXT_DOMAIN ); ?></div>
+        <?php } elseif ( $status === 'reset-error' ) { ?>
+            <div class="goobd-settings-notice goobd-settings-notice-error" role="alert"><?php echo yourls_esc_html__( 'Branding settings could not be reset. Please try again and check the YOURLS database connection.', GOOBD_AE_TEXT_DOMAIN ); ?></div>
+        <?php } ?>
+
+        <form class="goobd-settings-form" action="<?php echo yourls_esc_url( goobd_ae_settings_page_url() ); ?>" method="post">
+            <?php yourls_nonce_field( 'goobd_ae_save_settings', 'goobd_ae_settings_nonce' ); ?>
+
+            <div class="goobd-settings-grid">
+                <div class="goobd-settings-field goobd-settings-site-name">
+                    <label for="goobd-ae-site-name"><?php echo yourls_esc_html__( 'Site name', GOOBD_AE_TEXT_DOMAIN ); ?></label>
+                    <input id="goobd-ae-site-name" name="goobd_ae_site_name" type="text" maxlength="120" value="<?php echo yourls_esc_attr( $settings['site_name'] ); ?>" required />
+                    <p><?php echo yourls_esc_html__( 'Plain text used in browser titles, metadata, and accessibility labels.', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+                </div>
+
+                <div class="goobd-settings-field goobd-settings-tagline">
+                    <label for="goobd-ae-tagline-html"><?php echo yourls_esc_html__( 'Header tagline HTML', GOOBD_AE_TEXT_DOMAIN ); ?></label>
+                    <textarea id="goobd-ae-tagline-html" name="goobd_ae_tagline_html" rows="4"><?php echo yourls_esc_textarea( $settings['tagline_html'] ); ?></textarea>
+                    <p><?php echo yourls_esc_html__( 'Short supporting copy displayed on the right side of the header. Leave empty to hide it.', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+                </div>
+
+                <div class="goobd-settings-field goobd-settings-field-wide">
+                    <label for="goobd-ae-header-html"><?php echo yourls_esc_html__( 'Header identity HTML', GOOBD_AE_TEXT_DOMAIN ); ?></label>
+                    <textarea id="goobd-ae-header-html" name="goobd_ae_header_html" rows="5" required><?php echo yourls_esc_textarea( $settings['header_html'] ); ?></textarea>
+                    <p><?php echo yourls_esc_html__( 'Rendered inside the Dashboard link. Links are intentionally not allowed here to prevent nested anchors.', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+                </div>
+
+                <div class="goobd-settings-field goobd-settings-field-wide">
+                    <label for="goobd-ae-footer-html"><?php echo yourls_esc_html__( 'Footer HTML', GOOBD_AE_TEXT_DOMAIN ); ?></label>
+                    <textarea id="goobd-ae-footer-html" name="goobd_ae_footer_html" rows="5"><?php echo yourls_esc_textarea( $settings['footer_html'] ); ?></textarea>
+                    <p><?php echo yourls_esc_html__( 'Safe links are supported. Leave empty to hide the footer text. Dynamic placeholders:', GOOBD_AE_TEXT_DOMAIN ); ?> <code>{year}</code>, <code>{site_url}</code>, <?php echo yourls_esc_html__( 'and', GOOBD_AE_TEXT_DOMAIN ); ?> <code>{admin_url}</code>.</p>
+                </div>
+            </div>
+
+            <div class="goobd-settings-allowlist" aria-label="<?php echo yourls_esc_attr__( 'Allowed HTML', GOOBD_AE_TEXT_DOMAIN ); ?>">
+                <strong><?php echo yourls_esc_html__( 'Allowed HTML', GOOBD_AE_TEXT_DOMAIN ); ?></strong>
+                <code>&lt;span&gt;</code>
+                <code>&lt;strong&gt;</code>
+                <code>&lt;em&gt;</code>
+                <code>&lt;small&gt;</code>
+                <code>&lt;br&gt;</code>
+                <code>&lt;a&gt; <?php echo yourls_esc_html__( 'footer only', GOOBD_AE_TEXT_DOMAIN ); ?></code>
+            </div>
+
+            <div class="goobd-settings-actions">
+                <button type="submit" name="goobd_ae_settings_action" value="save" class="button primary"><?php echo yourls_esc_html__( 'Save branding', GOOBD_AE_TEXT_DOMAIN ); ?></button>
+                <button type="submit" name="goobd_ae_settings_action" value="reset" class="button goobd-settings-reset" data-confirm="<?php echo yourls_esc_attr__( 'Reset all branding settings to the plugin defaults?', GOOBD_AE_TEXT_DOMAIN ); ?>" onclick="return window.confirm(this.getAttribute('data-confirm'));"><?php echo yourls_esc_html__( 'Reset defaults', GOOBD_AE_TEXT_DOMAIN ); ?></button>
+            </div>
+        </form>
+
+        <section class="goobd-settings-preview" aria-labelledby="goobd-settings-preview-title">
+            <div class="goobd-settings-preview-heading">
+                <h3 id="goobd-settings-preview-title"><?php echo yourls_esc_html__( 'Saved preview', GOOBD_AE_TEXT_DOMAIN ); ?></h3>
+                <p><?php echo yourls_esc_html__( 'The preview uses the same sanitized HTML and wrapping behavior rendered by the theme.', GOOBD_AE_TEXT_DOMAIN ); ?></p>
+            </div>
+            <div class="goobd-settings-preview-header">
+                <div class="goobd-settings-preview-brand"><?php echo goobd_ae_expand_brand_tokens( $settings['header_html'] ); ?></div>
+                <div class="goobd-settings-preview-tagline"><?php echo goobd_ae_expand_brand_tokens( $settings['tagline_html'] ); ?></div>
+            </div>
+            <div class="goobd-settings-preview-footer"><?php echo goobd_ae_expand_brand_tokens( $settings['footer_html'] ); ?></div>
+        </section>
+    </main>
+    <?php
 }
 
 /**
@@ -304,13 +769,19 @@ function goobd_ae_signature_reset_panel() {
 
 yourls_add_filter( 'html_title', 'goobd_ae_html_title' );
 function goobd_ae_html_title( $title, $context = '' ) {
+    $settings  = goobd_ae_get_settings();
+    $site_name = $settings['site_name'];
+
     if ( $context === 'login' ) {
-        return 'Sign in | goo.bd';
+        return 'Sign in | ' . $site_name;
     }
     if ( $context === 'index' ) {
-        return 'Dashboard | goo.bd';
+        return 'Dashboard | ' . $site_name;
     }
-    return 'goo.bd | URL Shortener';
+    if ( $context === 'plugin_page_' . GOOBD_AE_SETTINGS_PAGE ) {
+        return 'Admin Experience Settings | ' . $site_name;
+    }
+    return $site_name . ' | URL Shortener';
 }
 
 /** Use product language while preserving the native dashboard URL and menu key. */
@@ -326,9 +797,8 @@ function goobd_ae_admin_links( $links ) {
 
 yourls_add_filter( 'html_footer_text', 'goobd_ae_footer_text' );
 function goobd_ae_footer_text( $footer ) {
-    $year = date( 'Y' );
-    return '&copy; ' . $year . ' goo.bd powered by '
-        . '<a href="https://cornq.com/" target="_blank" rel="noopener noreferrer"><strong>CORNQ</strong></a>';
+    $settings = goobd_ae_get_settings();
+    return goobd_ae_expand_brand_tokens( $settings['footer_html'] );
 }
 
 /**
@@ -337,15 +807,16 @@ function goobd_ae_footer_text( $footer ) {
  */
 yourls_add_action( 'html_logo', 'goobd_ae_brand_header' );
 function goobd_ae_brand_header() {
-    $admin_url = yourls_admin_url( 'index.php' );
+    $admin_url  = yourls_admin_url( 'index.php' );
+    $settings   = goobd_ae_get_settings();
+    $site_name  = $settings['site_name'];
+    $header_html = goobd_ae_expand_brand_tokens( $settings['header_html'] );
+    $tagline_html = goobd_ae_expand_brand_tokens( $settings['tagline_html'] );
     ?>
-    <header id="goobd-brand" class="goobd-brand" aria-label="goo.bd by CORNQ">
+    <header id="goobd-brand" class="goobd-brand" aria-label="<?php echo yourls_esc_attr( $site_name . ' header' ); ?>">
         <div class="goobd-brand-inner">
-            <a class="goobd-brand-link" href="<?php echo yourls_esc_url( $admin_url ); ?>" aria-label="goo.bd dashboard">
-                <span class="goobd-product-name">goo.bd</span>
-                <span class="goobd-brand-attribution">by CORNQ</span>
-            </a>
-            <span class="goobd-tagline">Short links. Made simple.</span>
+            <a class="goobd-brand-link" href="<?php echo yourls_esc_url( $admin_url ); ?>" aria-label="<?php echo yourls_esc_attr( $site_name . ' dashboard' ); ?>"><?php echo $header_html; ?></a>
+            <span class="goobd-tagline"><?php echo $tagline_html; ?></span>
         </div>
     </header>
     <?php
@@ -392,13 +863,14 @@ function goobd_ae_cookie_life( $life ) {
 yourls_add_action( 'html_head', 'goobd_ae_head' );
 function goobd_ae_head( $context = '' ) {
     $plugin_dir = basename( dirname( __FILE__ ) );
+    $settings = goobd_ae_get_settings();
     $css_url = rtrim( yourls_site_url( false ), '/' )
         . '/user/plugins/' . rawurlencode( $plugin_dir )
         . '/assets/admin.css?v=' . rawurlencode( GOOBD_AE_VERSION );
     ?>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#182c45" />
-    <meta name="application-name" content="goo.bd" />
+    <meta name="application-name" content="<?php echo yourls_esc_attr( $settings['site_name'] ); ?>" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="stylesheet" href="<?php echo yourls_esc_url( $css_url ); ?>" type="text/css" media="screen" />
     <script>
@@ -544,6 +1016,15 @@ function goobd_ae_head( $context = '' ) {
           toggle.setAttribute('aria-expanded','false');
           toggle.setAttribute('aria-label','Open admin menu');
         }
+      }
+
+      function enhanceSharedLayout(){
+        var brand = document.getElementById('goobd-brand');
+        var wrap = document.getElementById('wrap');
+        if(!brand || !wrap || brand.parentNode === document.body) return;
+
+        document.body.insertBefore(brand, wrap);
+        document.body.classList.add('goobd-brand-relocated');
       }
 
       function enhanceAdminMenu(){
@@ -1250,6 +1731,7 @@ function goobd_ae_head( $context = '' ) {
       }
 
       document.addEventListener('DOMContentLoaded', function(){
+        enhanceSharedLayout();
         enhanceAdminMenu();
         rememberDashboardLocation();
         enhanceDashboardSummary();

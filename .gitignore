@@ -1,0 +1,46 @@
+# Internal project references (not part of the public plugin release)
+/Instructions.md
+/BRAND.md
+/app.css
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Release archives and generated build output
+/build/
+/dist/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Test and analysis artifacts
+/.cache/
+/coverage/
+.phpunit.result.cache
+phpunit.xml
+phpunit.xml.dist.local
+
+# Logs and temporary/backup files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Dependencies generated locally
+/vendor/
+
+# Editor settings
+/.idea/
+/.vscode/
+*.code-workspace
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

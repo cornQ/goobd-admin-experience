@@ -27,6 +27,7 @@ html { min-height: 100%; background: var(--brand-off-white); }
 body {
   min-height: 100vh;
   margin: 0 !important;
+  padding: 0 !important;
   background: linear-gradient(180deg,#fff 0%,#f7f9fb 52%,#f1f5f7 100%) !important;
   color: var(--text-ink) !important;
   font-family: var(--font-sans) !important;
@@ -42,9 +43,10 @@ a { color: var(--brand-blue); }
 .goobd-brand {
   box-sizing: border-box;
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw !important;
+  left: auto;
+  transform: none;
+  width: 100% !important;
+  max-width: 100%;
   min-height: 78px;
   display: flex !important;
   align-items: center;
@@ -69,14 +71,35 @@ a { color: var(--brand-blue); }
 .goobd-brand-link {
   display: inline-flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 5px;
+  min-width: 0;
+  max-width: 100%;
   color: var(--brand-navy) !important;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  overflow-wrap: anywhere;
   text-decoration: none !important;
-  white-space: nowrap;
+  white-space: normal;
 }
 .goobd-product-name { font-size:20px; font-weight:800; letter-spacing:-.02em; }
 .goobd-brand-attribution { color:var(--text-muted); font-size:12px; font-weight:600; }
-.goobd-tagline { color:var(--text-muted); font-size:13px; font-weight:600; text-align:right; }
+.goobd-brand-link > *,
+.goobd-tagline > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.goobd-tagline {
+  min-width: 0;
+  max-width: 45%;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
 
 .goobd-brand-link:focus-visible,
 #footer a:focus-visible,
@@ -88,12 +111,20 @@ td.actions .button:focus-visible {
 }
 
 /* LOGIN — all modern form sizing is deliberately scoped to the login page. */
-body.login { display:flex !important; flex-direction:column; }
+body.login {
+  display:flex !important;
+  flex-direction:column;
+  height:100vh;
+  height:100dvh;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-y:auto;
+}
 body.login #wrap {
   box-sizing:border-box;
   width:100% !important; max-width:none !important; min-width:0 !important;
   min-height:0; margin:0 !important; padding:0 !important;
-  flex:1 0 auto; display:flex; flex-direction:column;
+  flex:1 1 auto; display:flex; flex-direction:column;
   background:transparent !important; border:0 !important;
 }
 body.login .goobd-brand { flex:0 0 auto; }
@@ -101,7 +132,8 @@ body.login main {
   box-sizing:border-box;
   width:100% !important; margin:0 !important;
   padding:34px 16px 48px !important;
-  flex:1 0 auto; display:flex; align-items:flex-start; justify-content:center;
+  min-height:0;
+  flex:1 1 auto; display:flex; align-items:flex-start; justify-content:center;
 }
 body.login #login { width:min(370px,100%) !important; max-width:none !important; margin:0 !important; padding:0 !important; background:transparent !important; border:0 !important; }
 body.login #login form {
@@ -151,6 +183,18 @@ body.login #login #submit {
   border:0 !important; border-radius:10px !important; background:var(--brand-navy) !important;
   color:#fff !important; font-family:var(--font-sans) !important; font-size:14px !important;
   font-weight:700 !important; line-height:1.2; text-shadow:none !important; box-shadow:none !important; cursor:pointer;
+}
+
+/* When the viewport is genuinely short, restore document flow so extra login
+ * fields and the on-screen keyboard can scroll without overlapping the footer. */
+@media (max-height:720px) {
+  body.login {
+    height:auto;
+  }
+  body.login #wrap,
+  body.login main {
+    flex:none;
+  }
 }
 
 /* ADMIN / COMMON WRAPPER */
@@ -557,6 +601,7 @@ td.actions a { visibility:visible !important; opacity:1 !important; }
 }
 #footer a { color:var(--brand-navy) !important; font-weight:700 !important; text-decoration:none !important; }
 #footer a:hover,#footer a:focus-visible { text-decoration:underline !important; }
+body.login #footer { margin-top:0 !important; }
 
 @media (max-width:900px) {
   /* Statistics pages can contain fixed-width Google charts. Allow horizontal scroll rather than crop data. */
@@ -4377,6 +4422,319 @@ body.tools .goobd-tools-api pre tt {
   }
   body.tools .goobd-tools-api pre {
     font-size: 10px !important;
+  }
+}
+
+/* =========================================================
+ * v1.25 — Configurable branding settings
+ * Scoped to the registered YOURLS plugin page so existing
+ * dashboard, plugin-table, tools, and statistics layouts stay isolated.
+ * ======================================================= */
+body.plugin_page_goobd-admin-experience .goobd-settings-page {
+  box-sizing: border-box;
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 24px;
+  color: var(--text-ink);
+  font-family: var(--font-sans);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-intro,
+body.plugin_page_goobd-admin-experience .goobd-settings-form,
+body.plugin_page_goobd-admin-experience .goobd-settings-preview {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-summary);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-kicker {
+  margin: 0 0 5px;
+  color: var(--brand-blue);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-intro h2 {
+  margin: 0 0 7px;
+  color: var(--brand-navy);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-intro > p:last-child,
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-heading p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-notice {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-ink);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-notice-success {
+  border-color: #b9dfcf;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-notice-error {
+  border-color: #efc3bf;
+  color: var(--danger);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px 16px;
+  width: 100%;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field {
+  min-width: 0;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field-wide {
+  grid-column: 1 / -1;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field label {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--brand-navy);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field input,
+body.plugin_page_goobd-admin-experience .goobd-settings-field textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 11px;
+  background: var(--surface);
+  border: 1.5px solid #cfd8e2;
+  border-radius: 9px;
+  color: var(--text-ink);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: none;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field input {
+  min-height: 44px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field textarea {
+  min-height: 112px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 11.5px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field input:focus,
+body.plugin_page_goobd-admin-experience .goobd-settings-field textarea:focus {
+  outline: 0;
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(65,106,184,.11);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field > p {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  line-height: 1.5;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-field code,
+body.plugin_page_goobd-admin-experience .goobd-settings-allowlist code {
+  padding: 2px 5px;
+  background: var(--surface-secondary);
+  border-radius: 4px;
+  color: var(--brand-navy);
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-allowlist {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 0;
+  padding: 11px 12px;
+  background: #fafcfd;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-allowlist strong {
+  margin-right: 3px;
+  color: var(--brand-navy);
+  font-size: 11px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-actions .button {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 126px;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-secondary);
+  color: var(--brand-navy);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-actions .button.primary {
+  background: var(--brand-navy);
+  border-color: var(--brand-navy);
+  color: #fff;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-actions .button:hover {
+  background: #e2e9f0;
+  border-color: #c5d0dc;
+  color: var(--brand-navy);
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-actions .button:focus-visible {
+  outline: 3px solid var(--brand-yellow);
+  outline-offset: 2px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-heading h3 {
+  margin: 0;
+  color: var(--brand-navy);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-header,
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-footer {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 15px;
+  background: #fafcfd;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-brand {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+  color: var(--brand-navy);
+  font-size: 20px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-brand .goobd-brand-attribution {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-brand > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-tagline {
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-footer {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  text-align: center;
+}
+body.plugin_page_goobd-admin-experience .goobd-settings-preview-footer a {
+  color: var(--brand-navy);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  body.plugin_page_goobd-admin-experience .goobd-settings-page {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-intro,
+  body.plugin_page_goobd-admin-experience .goobd-settings-form,
+  body.plugin_page_goobd-admin-experience .goobd-settings-preview {
+    padding: 15px;
+    border-radius: 12px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-intro h2 {
+    font-size: 19px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-field-wide {
+    grid-column: 1;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-field textarea {
+    min-height: 126px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-actions .button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-preview-heading,
+  body.plugin_page_goobd-admin-experience .goobd-settings-preview-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+  body.plugin_page_goobd-admin-experience .goobd-settings-preview-tagline {
+    text-align: left;
   }
 }
 
