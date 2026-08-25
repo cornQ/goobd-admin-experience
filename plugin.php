@@ -50,7 +50,7 @@ function goobd_ae_load_textdomain() {
 }
 
 /**
- * Current defaults preserve the existing goo.bd installation when the plugin
+ * Current defaults preserve the existing goobd installation when the plugin
  * is upgraded without saved settings.
  */
 function goobd_ae_default_settings() {
@@ -307,7 +307,7 @@ function goobd_ae_store_settings( $settings ) {
         yourls_update_option( GOOBD_AE_SETTINGS_OPTION, $settings );
         $stored = yourls_get_option( GOOBD_AE_SETTINGS_OPTION, null );
     } catch ( Throwable $exception ) {
-        yourls_debug_log( 'goo.bd Admin Experience could not persist branding settings.' );
+        yourls_debug_log( 'goobd Admin Experience could not persist branding settings.' );
         return false;
     }
 
@@ -634,7 +634,7 @@ function goobd_ae_rotate_cookie_key() {
     try {
         $new_key = bin2hex( random_bytes( 32 ) );
     } catch ( Exception $exception ) {
-        yourls_debug_log( 'goo.bd Admin Experience could not generate a new YOURLS_COOKIEKEY.' );
+        yourls_debug_log( 'goobd Admin Experience could not generate a new YOURLS_COOKIEKEY.' );
         return 'A cryptographically secure key could not be generated on this server.';
     }
 
