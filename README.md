@@ -1,19 +1,39 @@
 # goobd Admin Experience for YOURLS
 
-A configurable, responsive admin and login experience for YOURLS. The plugin preserves native YOURLS behavior while improving link management, statistics, sharing, tools, plugin management, mobile layouts, and branding controls.
+goobd Admin Experience transforms the native [YOURLS](https://github.com/YOURLS/YOURLS)  admin panel into a modern, responsive interface for desktop and mobile while preserving the core YOURLS workflow and functionality.
 
 Current version: **1.25.5**
 
 ## Features
 
-- Responsive YOURLS Dashboard and login interface
-- Mobile-friendly URL cards and compact action menus
-- Improved filtering, pagination, sharing, statistics, tools, and plugin pages
-- Optional 30-day Remember Me login
-- Configurable header identity, tagline, site name, and footer
-- Safe inline HTML support for branding fields
-- Optional gettext translations
-- No YOURLS core-file modifications
+- **Fully Redesigned Admin Panel**
+  - Modernized YOURLS admin experience while preserving native functionality.
+
+- **Responsive Desktop & Mobile Experience**
+  - Responsive Dashboard, Login, Statistics, Plugins, and Tools pages.
+  - Optimized layouts and controls for both desktop and mobile devices.
+
+- **Responsive Link & Plugin Management**
+  - Improved link management table for desktop.
+  - Mobile-friendly link cards and actions.
+  - Responsive plugin management interface.
+  - Direct short URL copy action.
+
+- **30-Day Remember Me**
+  - Optional 30-day persistent login support directly from the YOURLS login page.
+
+- **Built-in API Secret Reset**
+  - Reset the secret signature token used for passwordless API requests directly from the Tools page.
+  - Securely rotates the underlying secret and invalidates previous signatures.
+
+- **Configurable Branding**
+  - Customize the site name, header identity, tagline, and footer.
+  - Sanitized HTML support for safe branding customization.
+  - Localization and translation support.
+
+- **Redesigned Navigation**
+  - Modernized admin navigation while preserving native and plugin-added menu items.
+  - Responsive hamburger navigation for mobile devices.
 
 ## Requirements
 
@@ -30,62 +50,78 @@ Current version: **1.25.5**
    user/plugins/goobd-admin-experience/
    ```
 
-3. Sign in to the YOURLS admin area.
+3. Sign in to your YOURLS admin area.
 4. Open **Manage Plugins**.
 5. Activate **goobd Admin Experience for YOURLS**.
 6. Open **Manage Plugins → Admin Experience Settings** to configure branding.
-7. Hard-refresh the browser after an update so the versioned stylesheet reloads.
+7. Hard-refresh your browser after installation or an update to ensure the latest versioned stylesheet is loaded.
 
-## Production deployment
+## Branding Settings
 
-The runtime plugin requires:
+The plugin includes a native YOURLS settings page for customizing the admin interface without modifying the plugin files.
+
+Available settings include:
+
+- **Site name** — Plain text used in page titles, metadata, and accessibility labels.
+- **Header identity HTML** — Safe inline HTML displayed as the main header identity.
+- **Header tagline HTML** — Optional inline HTML displayed below the header identity.
+- **Footer HTML** — Optional footer content with restricted link support.
+
+### Dynamic Placeholders
+
+The following placeholders can be used in supported branding fields:
 
 ```text
-goobd-admin-experience/
-├── plugin.php
-├── assets/
-│   └── admin.css
-└── languages/        # Only required when translations are installed
+{year}
+{site_url}
+{admin_url}
 ```
 
-Files such as `tests/`, `.gitignore`, and repository documentation are useful on GitHub but are not required on the production server.
+Resetting the branding settings restores the default `goobd by CORNQ` identity.
 
-## Branding settings
+## API Secret Reset
 
-The settings page provides:
+The YOURLS Tools page includes a built-in option for rotating the secret used for passwordless API signatures.
 
-- **Site name:** required plain text used in titles, metadata, and accessibility labels
-- **Header identity HTML:** required safe inline HTML displayed in the main brand link
-- **Header tagline HTML:** optional safe inline HTML
-- **Footer HTML:** optional safe inline HTML with restricted links
+This allows an administrator to reset the API secret without manually editing the YOURLS configuration file.
 
-Supported dynamic placeholders:
+The reset process is protected by authentication, nonce verification, and explicit confirmation.
 
-- `{year}`
-- `{site_url}`
-- `{admin_url}`
+> **Important:** Resetting the API secret invalidates existing passwordless API signatures and active admin sessions. You will be required to sign in again after the reset.
 
-Resetting the settings restores the default `goobd by CORNQ` identity.
+## HTML Security
 
-## HTML security
+Configurable branding fields use a restricted HTML allowlist.
 
-Header and tagline fields allow these inline elements:
+Header identity and tagline fields support:
 
 ```html
 <span> <strong> <em> <small> <br>
 ```
 
-The footer additionally allows restricted `<a>` elements. The sanitizer removes scripts, embedded content, forms, inline styles, event handlers, and unsafe URL protocols. Links using `target="_blank"` receive `noopener noreferrer` protection.
+The footer additionally supports restricted `<a>` elements.
+
+The sanitizer removes or rejects potentially unsafe content including:
+
+- Scripts and embedded content
+- Forms
+- Inline styles
+- Event-handler attributes
+- Unsafe URL protocols
+
+Links using `target="_blank"` automatically receive `noopener noreferrer` protection.
 
 ## Translations
 
-The gettext text domain is:
+The plugin supports optional gettext translations.
+
+Text domain:
 
 ```text
 goobd-admin-experience
 ```
 
-Place compiled translations in `languages/` using this filename pattern:
+Place compiled translation files inside the `languages/` directory using the following filename format:
 
 ```text
 goobd-admin-experience-LOCALE.mo
@@ -101,31 +137,43 @@ The `languages/` directory is optional when no translation is installed.
 
 ## Testing
 
-Do not upload `tests/` to the production server. Run tests locally, on staging, or in CI:
+Basic regression tests are included for contributors and maintainers.
+
+Run the following commands from the plugin directory:
 
 ```bash
 php -l plugin.php
 php tests/branding-sanitizer-test.php
 ```
 
-Before deployment, verify the Dashboard, filtering, pagination, row actions, statistics, sharing, tools, plugin management, login, header, and footer on desktop and at 412px, 390px, and 360px mobile widths.
+For interface testing, the Dashboard, filtering, pagination, link actions, Statistics, sharing, Tools, plugin management, login interface, header, and footer should be verified on both desktop and mobile viewports.
 
 ## Updating
 
 1. Back up the existing plugin directory.
 2. Replace the plugin files with the new version.
-3. Hard-refresh the browser.
-4. Verify the main Dashboard and statistics/share pages on desktop and mobile.
+3. Hard-refresh your browser.
+4. Verify the main Dashboard and other customized admin pages.
 
 Saved branding settings remain in the YOURLS options table when the plugin is deactivated.
 
-## Compatibility and safety
+## Compatibility
 
-This plugin uses YOURLS hooks and progressive enhancement. It does not intentionally modify YOURLS core files, short-link data, or database tables. Native actions, nonces, filtering, sorting, pagination, AJAX editing, deletion, sharing, and statistics remain in place.
+goobd Admin Experience enhances the existing YOURLS interface through hooks and progressive enhancement rather than replacing the underlying YOURLS functionality.
+
+The plugin does not intentionally modify YOURLS core files, short-link data, or database tables.
+
+Native YOURLS functionality including filtering, sorting, pagination, AJAX editing, deletion, sharing, statistics, nonces, and plugin-added navigation is preserved.
+
+## Support
+
+For bug reports, compatibility issues, or feature requests, please open an issue on GitHub:
+
+[Open an Issue](https://github.com/cornQ/goobd-admin-experience/issues)
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for release history.
+See [CHANGELOG.md](CHANGELOG.md) for the complete release history.
 
 ## License
 
