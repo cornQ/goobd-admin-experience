@@ -1,4 +1,4 @@
-# goo.bd Admin Experience for YOURLS
+# goobd Admin Experience for YOURLS
 
 A configurable, responsive admin and login experience for YOURLS. The plugin preserves native YOURLS behavior while improving link management, statistics, sharing, tools, plugin management, mobile layouts, and branding controls.
 
@@ -32,7 +32,7 @@ Current version: **1.25.5**
 
 3. Sign in to the YOURLS admin area.
 4. Open **Manage Plugins**.
-5. Activate **goo.bd Admin Experience for YOURLS**.
+5. Activate **goobd Admin Experience for YOURLS**.
 6. Open **Manage Plugins → Admin Experience Settings** to configure branding.
 7. Hard-refresh the browser after an update so the versioned stylesheet reloads.
 
@@ -65,7 +65,7 @@ Supported dynamic placeholders:
 - `{site_url}`
 - `{admin_url}`
 
-Resetting the settings restores the default `goo.bd by CORNQ` identity.
+Resetting the settings restores the default `goobd by CORNQ` identity.
 
 ## HTML security
 
