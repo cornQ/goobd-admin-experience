@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: goo.bd Admin Experience for YOURLS
-Plugin URI: https://github.com/cornQ/goobd-yourls-theme
+Plugin Name: goobd Admin Experience for YOURLS
+Plugin URI: https://github.com/cornQ/goobd-admin-experience
 Description: A configurable, responsive YOURLS admin and login experience with safe HTML branding controls.
 Version: 1.25.5
 Author: CORNQ
