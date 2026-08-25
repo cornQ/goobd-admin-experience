@@ -1,6 +1,6 @@
 # goobd Admin Experience for YOURLS
 
-goobd Admin Experience transforms the native [YOURLS](https://github.com/YOURLS/YOURLS)  admin panel into a modern, responsive interface for desktop and mobile while preserving the core YOURLS workflow and functionality.
+goobd Admin Experience transforms the native [YOURLS](https://github.com/YOURLS/YOURLS) admin panel into a modern, responsive interface for desktop and mobile while preserving the core YOURLS workflow and functionality.
 
 Current version: **1.25.5**
 
@@ -77,7 +77,7 @@ The following placeholders can be used in supported branding fields:
 {admin_url}
 ```
 
-Resetting the branding settings restores the default `goobd by CORNQ` identity.
+Resetting the branding settings restores the default `goo.bd by CORNQ` identity.
 
 ## API Secret Reset
 
