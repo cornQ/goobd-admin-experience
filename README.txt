@@ -1,4 +1,4 @@
-goo.bd Admin Experience for YOURLS
+goobd Admin Experience for YOURLS
 
 Current version: 1.25.5
 
@@ -19,7 +19,7 @@ Clean installation
 
 1. Copy this repository directory to `user/plugins/goobd-admin-experience/` inside YOURLS.
 2. Sign in to YOURLS and open Manage Plugins.
-3. Activate `goo.bd Admin Experience for YOURLS`.
+3. Activate `goobd Admin Experience for YOURLS`.
 4. Open Manage Plugins > Admin Experience Settings to configure the branding.
 5. Hard-refresh the browser after an update so the versioned stylesheet is reloaded.
 
@@ -31,7 +31,7 @@ Branding configuration
 - Header tagline supports safe inline HTML and may be left empty.
 - Footer supports safe inline HTML and safe links, and may be left empty.
 - Available placeholders are `{year}`, `{site_url}`, and `{admin_url}`.
-- Reset defaults restores the original `goo.bd by CORNQ` identity.
+- Reset defaults restores the original `goobd by CORNQ` identity.
 
 HTML security
 -------------
@@ -74,7 +74,7 @@ v1.25.3 shared-layout overflow fix:
 - Preserves scoped horizontal scrolling inside native statistics components
 
 v1.25.2 plugin identity consistency:
-- Renames the public plugin to goo.bd Admin Experience for YOURLS
+- Renames the public plugin to goobd Admin Experience for YOURLS
 - Aligns the gettext text domain and locale filenames with the `goobd-admin-experience` plugin slug
 - Keeps CORNQ as the author and default brand attribution
 
@@ -92,7 +92,7 @@ v1.25.0 configurable branding settings:
 Configurable branding settings:
 - Registers Admin Experience Settings as a native sub-page under Manage Plugins
 - Adds responsive controls for Site name, Header identity HTML, Header tagline HTML, and Footer HTML
-- Uses YOURLS options storage with the existing goo.bd by CORNQ identity as a backward-compatible default
+- Uses YOURLS options storage with the existing goobd by CORNQ identity as a backward-compatible default
 - Applies the configured site name to browser titles, application metadata, and accessibility labels
 - Supports {year}, {site_url}, and {admin_url} placeholders in branding HTML
 - Uses nonce-protected POST handling followed by a clean redirect after save or reset
